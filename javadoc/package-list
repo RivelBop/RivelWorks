@@ -1,9 +1,11 @@
 com.rivelbop.rivelworks
 com.rivelbop.rivelworks.graphics2d
 com.rivelbop.rivelworks.graphics3d
-com.rivelbop.rivelworks.graphics3d.particles
-com.rivelbop.rivelworks.graphics3d.shapes
+com.rivelbop.rivelworks.graphics3d.particle
+com.rivelbop.rivelworks.graphics3d.shape
 com.rivelbop.rivelworks.map2d
 com.rivelbop.rivelworks.math
-com.rivelbop.rivelworks.physics2d
+com.rivelbop.rivelworks.physics2d.body
+com.rivelbop.rivelworks.physics2d.joint
 com.rivelbop.rivelworks.ui
+com.rivelbop.rivelworks.utils

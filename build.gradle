@@ -68,6 +68,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        
+        implementation 'com.github.Anuken:gdx-postprocessing:1.07'
+
     }
 }
