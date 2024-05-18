@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * A distance joint, makes length between bodies constant.
@@ -30,8 +30,8 @@ public class JointDistance extends JointBase {
         definition.initialize(bodyA, bodyB, new Vector2(x1, y1), new Vector2(x2, y2));
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -50,8 +50,8 @@ public class JointDistance extends JointBase {
         definition.length = length;
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -66,7 +66,7 @@ public class JointDistance extends JointBase {
      * @param y2               The y used for length and positioning on a bodyB.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointDistance(World world, PhysicsBody bodyA, PhysicsBody bodyB, float x1, float y1, float x2, float y2, boolean collideConnected) {
+    public JointDistance(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, float x1, float y1, float x2, float y2, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), x1, y1, x2, y2, collideConnected);
     }
 
@@ -79,7 +79,7 @@ public class JointDistance extends JointBase {
      * @param length           The length of the joint.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointDistance(World world, PhysicsBody bodyA, PhysicsBody bodyB, float length, boolean collideConnected) {
+    public JointDistance(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, float length, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), length, collideConnected);
     }
 

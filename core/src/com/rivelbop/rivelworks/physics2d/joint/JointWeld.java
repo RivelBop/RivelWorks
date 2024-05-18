@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Weld joint, essentially glues two bodies together. A weld joint may distort somewhat because the island constraint solver is approximate.
@@ -28,8 +28,8 @@ public class JointWeld extends JointBase {
 
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -41,7 +41,7 @@ public class JointWeld extends JointBase {
      * @param anchor           The world anchor point.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointWeld(World world, PhysicsBody bodyA, PhysicsBody bodyB, Vector2 anchor, boolean collideConnected) {
+    public JointWeld(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, Vector2 anchor, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), anchor, collideConnected);
     }
 

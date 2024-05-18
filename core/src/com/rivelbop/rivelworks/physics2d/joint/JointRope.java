@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Rope joint, enforces a maximum distance between two points on two bodies. It has no other effect. Warning: if you attempt to change the maximum length during the simulation you will get some non-physical behavior.
@@ -27,8 +27,8 @@ public class JointRope extends JointBase {
 
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -39,7 +39,7 @@ public class JointRope extends JointBase {
      * @param bodyB            The second body to connect.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointRope(World world, PhysicsBody bodyA, PhysicsBody bodyB, boolean collideConnected) {
+    public JointRope(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), collideConnected);
     }
 

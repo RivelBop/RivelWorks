@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Prismatic joint, allows for relative translation of two bodies along a specified axis. A prismatic joint prevents relative rotation. Therefore, a prismatic joint has a single degree of freedom.
@@ -42,8 +42,8 @@ public class JointPrismatic extends JointBase {
         definition.enableMotor = enableMotor;
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -60,7 +60,7 @@ public class JointPrismatic extends JointBase {
      * @param enableMotor      Enable/disable the joint motor.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointPrismatic(World world, PhysicsBody bodyA, PhysicsBody bodyB, float lowerTranslation, float upperTranslation, float maxMotorForce, float motorSpeed, boolean enableLimit, boolean enableMotor, boolean collideConnected) {
+    public JointPrismatic(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, float lowerTranslation, float upperTranslation, float maxMotorForce, float motorSpeed, boolean enableLimit, boolean enableMotor, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), lowerTranslation, upperTranslation, maxMotorForce, motorSpeed, enableLimit, enableMotor, collideConnected);
     }
 

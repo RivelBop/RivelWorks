@@ -4,7 +4,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.MotorJoint;
 import com.badlogic.gdx.physics.box2d.joints.MotorJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Motor Joint, used to control the relative motion between two bodies. A typical usage is to control the movement of a dynamic body with respect to the ground.
@@ -33,8 +33,8 @@ public class JointMotor extends JointBase {
 
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -54,8 +54,8 @@ public class JointMotor extends JointBase {
         definition.maxTorque = maxTorque;
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -69,7 +69,7 @@ public class JointMotor extends JointBase {
      * @param maxTorque        The maximum torque friction in N-m.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointMotor(World world, PhysicsBody bodyA, PhysicsBody bodyB, float correctionFactor, float maxForce, float maxTorque, boolean collideConnected) {
+    public JointMotor(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, float correctionFactor, float maxForce, float maxTorque, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), correctionFactor, maxForce, maxTorque, collideConnected);
     }
 
@@ -83,7 +83,7 @@ public class JointMotor extends JointBase {
      * @param maxTorque        The maximum torque friction in N-m.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointMotor(World world, PhysicsBody bodyA, PhysicsBody bodyB, float maxForce, float maxTorque, boolean collideConnected) {
+    public JointMotor(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, float maxForce, float maxTorque, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), maxForce, maxTorque, collideConnected);
     }
 

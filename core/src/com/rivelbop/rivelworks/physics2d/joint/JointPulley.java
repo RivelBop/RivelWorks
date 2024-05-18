@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
 import com.badlogic.gdx.physics.box2d.joints.PulleyJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Pulley joint, used to create an idealized pulley. The pulley connects two bodies to ground and to each other. As one body goes up, the other goes down. The total length of the pulley rope is conserved according to the initial configuration.
@@ -32,8 +32,8 @@ public class JointPulley extends JointBase {
 
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -49,7 +49,7 @@ public class JointPulley extends JointBase {
      * @param ratio            The pulley ratio, used to simulate a block-and-tackle.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointPulley(World world, PhysicsBody bodyA, PhysicsBody bodyB, Vector2 groundAnchorA, Vector2 groundAnchorB, Vector2 anchorA, Vector2 anchorB, float ratio, boolean collideConnected) {
+    public JointPulley(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, Vector2 groundAnchorA, Vector2 groundAnchorB, Vector2 anchorA, Vector2 anchorB, float ratio, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), groundAnchorA, groundAnchorB, anchorA, anchorB, ratio, collideConnected);
     }
 

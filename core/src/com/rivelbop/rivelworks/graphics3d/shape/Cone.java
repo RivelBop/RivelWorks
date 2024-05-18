@@ -15,6 +15,16 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
  */
 public class Cone extends Shape3D {
     /**
+     * The dimensions of the Cone.
+     */
+    private final float RADIUS, HEIGHT;
+
+    /**
+     * Amount of divisions the model has, more = slower + better looking.
+     */
+    private final int DIVISIONS;
+
+    /**
      * Creates a cone by providing its dimensions and color.
      *
      * @param radius    The radius of the cone.
@@ -26,6 +36,10 @@ public class Cone extends Shape3D {
         super(new ModelBuilder().createCone(radius * 2f, height, radius * 2f, divisions,
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
+
+        this.RADIUS = radius;
+        this.HEIGHT = height;
+        this.DIVISIONS = divisions;
     }
 
     /**
@@ -40,5 +54,30 @@ public class Cone extends Shape3D {
         super(new ModelBuilder().createCone(radius * 2f, height, radius * 2f, divisions,
                 new Material(TextureAttribute.createDiffuse(texture)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates));
+
+        this.RADIUS = radius;
+        this.HEIGHT = height;
+        this.DIVISIONS = divisions;
+    }
+
+    /**
+     * @return The radius provided when constructing the object.
+     */
+    public float getRadius() {
+        return RADIUS;
+    }
+
+    /**
+     * @return The height provided when constructing the object.
+     */
+    public float getHeight() {
+        return HEIGHT;
+    }
+
+    /**
+     * @return The divisions provided when constructing the object.
+     */
+    public int getDivisions() {
+        return DIVISIONS;
     }
 }

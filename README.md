@@ -13,13 +13,16 @@ Most of the features we provide within RivelWorks are simplified wrappers of var
  * 3D 'Model' Wrappers (Models, Billboards, etc.)
  * 3D Particle Wrappers (Model, Billboard, and Point Particles)
  * 3D Shape Wrappers (Capsules, Cones, Cubes, Cylinders, Spheres, etc.)
+ * 3D Physics Wrappers (Physics/Collision Worlds/Bodies)
+ * 3D Model Support (OBJ, GLTF, FBX/G3DJ)
  * Post-Processing
  * Noise Generation
  * GamePad/Controller Support
+ * Networking (Kryonet)
+ * AssetManager Security Protocol
+ * ProGuard Desktop Obfuscation
  * And More...(Font, Batch, Interpolation, and more Wrappers)
- * 3D Physics (COMING SOON)
  * SteamWorks Integration (COMING SOON)
- * Kryonet Integration (COMING SOON)
  ## Getting Started
 Thankfully, libGDX handles most of the setup process for you, without the need to download the framework for yourself. They offer a convenient [setup tool](https://libgdx.com/dev/#how-to-get-started-with-libgdx "libGDX Setup Page") that automates most of the project creation process. Once you have opened the setup tool, insert your project's properties and ensure you have ALL OF THE OFFICIAL EXTENSIONS SELECTED to ensure that RivelWorks will have all the libraries necessary to function. For any other additional libraries, check out our [build.gradle](build.gradle) for all the libraries utilized.
  
@@ -34,3 +37,8 @@ The following are sources from where some of the code of RivelWorks is derived:
 * Noise Generation: [FastNoiseLite](https://github.com/Auburn/FastNoiseLite "FastNoiseLite Github")
 * Camera Shaker: [libGDX-cameraShake](https://github.com/antzGames/libGDX-cameraShake "libGDX-cameraShake Github")
 * Post Processing: [gdx-postprocessing](https://github.com/Anuken/gdx-postprocessing "gdx-postprocessing Github")
+* Networking: [kryonet](https://github.com/crykn/kryonet "kryonet Github")
+* Advanced Screen Manager: [libgdx-screenmanager](https://github.com/crykn/libgdx-screenmanager "libgdx-screenmanager Github")
+* Advanced Audio: [TuningFork](https://github.com/Hangman/TuningFork "TuningFork Github")
+* GLTF Support: [gdx-gltf](https://github.com/mgsx-dev/gdx-gltf "gdx-gltf Github")
+* Obfuscation: [proguard](https://www.guardsquare.com/proguard "ProGuard Website")

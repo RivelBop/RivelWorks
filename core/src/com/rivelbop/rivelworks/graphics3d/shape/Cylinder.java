@@ -15,6 +15,16 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
  */
 public class Cylinder extends Shape3D {
     /**
+     * The dimensions of the Cylinder.
+     */
+    private final float WIDTH, HEIGHT, DEPTH;
+
+    /**
+     * Amount of divisions the model has, more = slower + better looking.
+     */
+    private final int DIVISIONS;
+
+    /**
      * Creates a cylinder by providing its dimensions and color.
      *
      * @param width     The width of the cylinder.
@@ -27,6 +37,11 @@ public class Cylinder extends Shape3D {
         super(new ModelBuilder().createCylinder(width, height, depth, divisions,
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
+
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        this.DEPTH = depth;
+        this.DIVISIONS = divisions;
     }
 
     /**
@@ -42,5 +57,38 @@ public class Cylinder extends Shape3D {
         super(new ModelBuilder().createCylinder(width, height, depth, divisions,
                 new Material(TextureAttribute.createDiffuse(texture)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates));
+
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        this.DEPTH = depth;
+        this.DIVISIONS = divisions;
+    }
+
+    /**
+     * @return The width provided in the constructor.
+     */
+    public float getWidth() {
+        return WIDTH;
+    }
+
+    /**
+     * @return The height provided in the constructor.
+     */
+    public float getHeight() {
+        return HEIGHT;
+    }
+
+    /**
+     * @return The depth/length provided in the constructor.
+     */
+    public float getDepth() {
+        return DEPTH;
+    }
+
+    /**
+     * @return The divisions provided in the constructor.
+     */
+    public int getDivisions() {
+        return DIVISIONS;
     }
 }

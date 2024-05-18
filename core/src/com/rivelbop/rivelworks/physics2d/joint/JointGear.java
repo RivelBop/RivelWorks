@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.joints.GearJoint;
 import com.badlogic.gdx.physics.box2d.joints.GearJointDef;
 import com.badlogic.gdx.physics.box2d.joints.PrismaticJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Gear Joint, is used to connect two joints together. Either joint can be a revolute or prismatic joint.
@@ -36,8 +36,8 @@ public class JointGear extends JointBase {
         definition.ratio = ratio;
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -51,7 +51,7 @@ public class JointGear extends JointBase {
      * @param ratio            A gear ratio to bind the motions together.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointGear(World world, PhysicsBody bodyA, PhysicsBody bodyB, JointRevolute joint1, JointPrismatic joint2, float ratio, boolean collideConnected) {
+    public JointGear(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, JointRevolute joint1, JointPrismatic joint2, float ratio, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), joint1.getJoint(), joint2.getJoint(), ratio, collideConnected);
     }
 

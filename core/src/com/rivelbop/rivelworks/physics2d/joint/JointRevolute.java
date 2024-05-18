@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Revolute Joint, forces two bodies to share a common anchor point, often called a hinge point. The revolute joint has a single degree of freedom: the relative rotation of the two bodies. This is called the joint angle.
@@ -42,8 +42,8 @@ public class JointRevolute extends JointBase {
         definition.enableMotor = enableMotor;
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -61,7 +61,7 @@ public class JointRevolute extends JointBase {
      * @param enableMotor      A flag to enable the joint motor.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointRevolute(World world, PhysicsBody bodyA, PhysicsBody bodyB, Vector2 anchor, float lowerAngle, float upperAngle, float maxMotorTorque, float motorSpeed, boolean enableLimit, boolean enableMotor, boolean collideConnected) {
+    public JointRevolute(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, Vector2 anchor, float lowerAngle, float upperAngle, float maxMotorTorque, float motorSpeed, boolean enableLimit, boolean enableMotor, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), anchor, lowerAngle, upperAngle, maxMotorTorque, motorSpeed, enableLimit, enableMotor, collideConnected);
     }
 

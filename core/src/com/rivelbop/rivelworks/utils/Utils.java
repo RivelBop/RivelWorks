@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.GL20;
  *
  * @author David Jerzak (RivelBop)
  */
-public class Utils {
+public final class Utils {
+    private Utils() {
+    }
+
     /**
      * Clears the screen for 2D games (only clears the color buffer).
      */

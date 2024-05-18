@@ -143,7 +143,10 @@ public class AnimatedSprite extends Sprite implements Disposable {
     public void setAnimation(String animation) {
         // If the animation is within the stored animations, it will be utilized as the current animation.
         if (ANIMATIONS.containsKey(animation)) {
-            currentAnimation = ANIMATIONS.get(animation);
+            if (currentAnimation != ANIMATIONS.get(animation)) {
+                currentAnimation = ANIMATIONS.get(animation);
+                animationTime = 0f;
+            }
             return;
         }
 
@@ -153,7 +156,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
     }
 
     /**
-     * Changes the frame delay of the provided animation
+     * Changes the frame delay of the provided animation.
      *
      * @param animation  The name of the atlas region that will be altered.
      * @param frameDelay The amount of time each frame will be displayed.
@@ -169,7 +172,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
     }
 
     /**
-     * Changes the play mode of the provided animation
+     * Changes the play mode of the provided animation.
      *
      * @param animation The name of the atlas region that will be altered.
      * @param playMode  The 'loop type' of the animation.
@@ -191,6 +194,10 @@ public class AnimatedSprite extends Sprite implements Disposable {
         animationTime += Gdx.graphics.getDeltaTime();
         currentAnimation.update(animationTime).flip(currentAnimation.update(animationTime).isFlipX() != isFlipX(), false);
         setRegion(currentAnimation.update(animationTime));
+
+        if (currentAnimation.getAnimation().isAnimationFinished(animationTime)) {
+            animationTime = 0f;
+        }
     }
 
     /**

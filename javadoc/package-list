@@ -5,7 +5,13 @@ com.rivelbop.rivelworks.graphics3d.particle
 com.rivelbop.rivelworks.graphics3d.shape
 com.rivelbop.rivelworks.map2d
 com.rivelbop.rivelworks.math
+com.rivelbop.rivelworks.networking
 com.rivelbop.rivelworks.physics2d.body
 com.rivelbop.rivelworks.physics2d.joint
+com.rivelbop.rivelworks.physics3d
+com.rivelbop.rivelworks.physics3d.collision
+com.rivelbop.rivelworks.physics3d.physics
+com.rivelbop.rivelworks.preset
+com.rivelbop.rivelworks.screen
 com.rivelbop.rivelworks.ui
 com.rivelbop.rivelworks.utils

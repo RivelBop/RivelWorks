@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.rivelbop.rivelworks.physics2d.body.StaticBody;
+import com.rivelbop.rivelworks.physics2d.body.StaticBody2D;
 
 /**
  * Used as a skeleton for all tile maps.
@@ -181,7 +181,7 @@ public abstract class TileMap implements Disposable {
         Array<Polygon> polygons = getBoundingShapes(Polygon.class, index);
 
         for (Rectangle r : rectangles) {
-            StaticBody staticBody = new StaticBody(world, new PolygonShape() {{
+            StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
                 setAsBox(r.width / 2f / PPM, r.height / 2f / PPM);
             }});
             staticBody.getBody().setTransform((r.x + r.width / 2f) / PPM, (r.y + r.height / 2f) / PPM, 0f);
@@ -193,7 +193,7 @@ public abstract class TileMap implements Disposable {
                 vertices[i] /= PPM;
             }
 
-            StaticBody staticBody = new StaticBody(world, new PolygonShape() {{
+            StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
                 set(vertices);
             }});
             staticBody.getBody().setTransform(p.getX() / PPM, p.getY() / PPM, 0f);
@@ -212,7 +212,7 @@ public abstract class TileMap implements Disposable {
         Array<Polygon> polygons = getBoundingShapes(Polygon.class, name);
 
         for (Rectangle r : rectangles) {
-            StaticBody staticBody = new StaticBody(world, new PolygonShape() {{
+            StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
                 setAsBox(r.width / 2f / PPM, r.height / 2f / PPM);
             }});
             staticBody.getBody().setTransform((r.x + r.width / 2f) / PPM, (r.y + r.height / 2f) / PPM, 0f);
@@ -224,7 +224,7 @@ public abstract class TileMap implements Disposable {
                 vertices[i] /= PPM;
             }
 
-            StaticBody staticBody = new StaticBody(world, new PolygonShape() {{
+            StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
                 set(vertices);
             }});
             staticBody.getBody().setTransform(p.getX() / PPM, p.getY() / PPM, 0f);

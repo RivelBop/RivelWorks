@@ -6,6 +6,7 @@ project.ext.mainClassName = "com.rivelbop.rivelworks.DesktopLauncher"
 project.ext.assetsDir = new File("../assets")
 
 import org.gradle.internal.os.OperatingSystem
+import proguard.gradle.ProGuardTask
 
 tasks.register('run', JavaExec) {
     dependsOn classes
@@ -43,6 +44,21 @@ tasks.register('dist', Jar) {
     with jar
 }
 
+task obfuscate(dependsOn: dist, type: ProGuardTask) {
+    // Files
+    def inputFile = dist.outputs.files.singleFile.path
+    def outputJar = dist.destinationDirectory.file("rivelworks.jar") // Input export jar name here
+    def outputJarFilePath = outputJar.get().asFile.path
+
+    // Task configuration
+    configuration files("proguard-desktop.txt")
+
+    /* ONLY WORKS WITH JRE 8, CHECK OUT https://www.pixnbgames.com/blog/libgdx/libgdx-proguard-how-to-obfuscate-the-desktop-jar-file/ */
+    libraryjars("/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre/lib/rt.jar") // Path to jre rt.jar
+    libraryjars("/Library/Java/JavaVirtualMachines/jdk1.8.0_202.jdk/Contents/Home/jre/lib/jce.jar") // Path to jre jce.jar
+    injars  files(inputFile)
+    outjars files(outputJarFilePath)
+}
 
 dist.dependsOn classes
 

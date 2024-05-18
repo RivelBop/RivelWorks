@@ -2,24 +2,32 @@ package com.rivelbop.rivelworks.graphics3d;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
+import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.JsonReader;
 
 /**
- * Creates a {@link ModelInstance} without having to create a {@link ObjLoader} or {@link Model}.
+ * Creates a {@link ModelInstance} without having to create a {@link ObjLoader}, {@link G3dModelLoader}, or {@link Model}.
  *
  * @author David/Philip Jerzak (RivelBop)
  */
 public class Model3D extends ModelInstance implements Disposable {
     /**
-     * Loads a 3D model from the provided OBJ file.
+     * Loads a 3D model from the provided OBJ/G3DJ file.
      *
      * @param modelFile OBJ 3D Model File
      */
     public Model3D(FileHandle modelFile) {
-        super(new ObjLoader().loadModel(modelFile));
+        this(modelFile.extension().equals("obj") ?
+                new ObjLoader().loadModel(modelFile) :
+                modelFile.extension().equals("g3dj") ?
+                        new G3dModelLoader(new JsonReader()).loadModel(modelFile) :
+                        new Model());
     }
 
     /**
@@ -29,6 +37,25 @@ public class Model3D extends ModelInstance implements Disposable {
      */
     public Model3D(Model model) {
         super(model);
+    }
+
+    /**
+     * Renders the model to the batch.
+     *
+     * @param batch The batch to render the model to.
+     */
+    public void render(ModelBatch batch) {
+        batch.render(this);
+    }
+
+    /**
+     * Renders the current model instance to the batch and applied the environment to that model.
+     *
+     * @param batch       The batch to render the model to.
+     * @param environment The environment that will be applied to the model.
+     */
+    public void render(ModelBatch batch, Environment environment) {
+        batch.render(this, environment);
     }
 
     /**

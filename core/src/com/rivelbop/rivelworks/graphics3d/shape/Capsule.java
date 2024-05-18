@@ -15,6 +15,16 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
  */
 public class Capsule extends Shape3D {
     /**
+     * The dimensions of the Capsule.
+     */
+    private final float RADIUS, HEIGHT;
+
+    /**
+     * Amount of divisions the model has, more = slower + better looking (more 'circular').
+     */
+    private final int DIVISIONS;
+
+    /**
      * Creates a capsule by providing its dimensions and color.
      *
      * @param radius    The radius of the capsule.
@@ -26,6 +36,10 @@ public class Capsule extends Shape3D {
         super(new ModelBuilder().createCapsule(radius, height, divisions,
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
+
+        this.RADIUS = radius;
+        this.HEIGHT = height;
+        this.DIVISIONS = divisions;
     }
 
     /**
@@ -40,5 +54,30 @@ public class Capsule extends Shape3D {
         super(new ModelBuilder().createCapsule(radius, height, divisions,
                 new Material(TextureAttribute.createDiffuse(texture)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates));
+
+        this.RADIUS = radius;
+        this.HEIGHT = height;
+        this.DIVISIONS = divisions;
+    }
+
+    /**
+     * @return The radius of the capsule model.
+     */
+    public float getRadius() {
+        return RADIUS;
+    }
+
+    /**
+     * @return The height of the capsule model.
+     */
+    public float getHeight() {
+        return HEIGHT;
+    }
+
+    /**
+     * @return The divisions of the capsule model.
+     */
+    public int getDivisions() {
+        return DIVISIONS;
     }
 }

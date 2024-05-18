@@ -15,6 +15,16 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
  */
 public class Sphere extends Shape3D {
     /**
+     * The radius of the sphere, same from all angles.
+     */
+    private final float RADIUS;
+
+    /**
+     * Amount of divisions the model has, more = slower + better looking.
+     */
+    private final int DIVISIONS;
+
+    /**
      * Creates a sphere by providing its dimensions and color.
      *
      * @param radius    The radius of the sphere.
@@ -25,6 +35,9 @@ public class Sphere extends Shape3D {
         super(new ModelBuilder().createSphere(radius * 2f, radius * 2f, radius * 2f, divisions, divisions,
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
+
+        this.RADIUS = radius;
+        this.DIVISIONS = divisions;
     }
 
     /**
@@ -38,5 +51,22 @@ public class Sphere extends Shape3D {
         super(new ModelBuilder().createSphere(radius * 2f, radius * 2f, radius * 2f, divisions, divisions,
                 new Material(TextureAttribute.createDiffuse(texture)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates));
+
+        this.RADIUS = radius;
+        this.DIVISIONS = divisions;
+    }
+
+    /**
+     * @return The radius provided in the constructor.
+     */
+    public float getRadius() {
+        return RADIUS;
+    }
+
+    /**
+     * @return The divisions provided in the constructor.
+     */
+    public int getDivisions() {
+        return DIVISIONS;
     }
 }

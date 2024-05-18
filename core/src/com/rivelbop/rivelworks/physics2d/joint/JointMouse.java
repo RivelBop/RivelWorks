@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Mouse joint, used in the testbed to manipulate bodies with the mouse. It attempts to drive a point on a body towards the current position of the cursor. There is no restriction on rotation.
@@ -30,8 +30,8 @@ public class JointMouse extends JointBase {
         definition.bodyA = bodyA;
         definition.bodyB = bodyB;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -41,7 +41,7 @@ public class JointMouse extends JointBase {
      * @param bodyA The first body to connect.
      * @param bodyB The second body to connect.
      */
-    public JointMouse(World world, PhysicsBody bodyA, PhysicsBody bodyB) {
+    public JointMouse(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB) {
         this(world, bodyA.getBody(), bodyB.getBody());
     }
 

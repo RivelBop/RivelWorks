@@ -15,6 +15,11 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
  */
 public class Cube extends Shape3D {
     /**
+     * The dimensions of the Cube.
+     */
+    private final float WIDTH, HEIGHT, DEPTH;
+
+    /**
      * Creates a cube by providing its dimensions and color.
      *
      * @param width  The width of the cube.
@@ -26,6 +31,10 @@ public class Cube extends Shape3D {
         super(new ModelBuilder().createBox(width, height, depth,
                 new Material(ColorAttribute.createDiffuse(color)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal));
+
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        this.DEPTH = depth;
     }
 
     /**
@@ -40,5 +49,30 @@ public class Cube extends Shape3D {
         super(new ModelBuilder().createBox(width, height, depth,
                 new Material(TextureAttribute.createDiffuse(texture)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal | VertexAttributes.Usage.TextureCoordinates));
+
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        this.DEPTH = depth;
+    }
+
+    /**
+     * @return The width provided in the constructor.
+     */
+    public float getWidth() {
+        return WIDTH;
+    }
+
+    /**
+     * @return The height provided in the constructor.
+     */
+    public float getHeight() {
+        return HEIGHT;
+    }
+
+    /**
+     * @return The depth/length provided in the constructor.
+     */
+    public float getDepth() {
+        return DEPTH;
     }
 }

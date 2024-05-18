@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WheelJoint;
 import com.badlogic.gdx.physics.box2d.joints.WheelJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Wheel joint, provides two degrees of freedom: translation along an axis fixed in bodyA and rotation in the plane. You can use a joint limit to restrict the range of motion and a joint motor to drive the rotation or to model rotational friction. This joint is designed for vehicle suspensions.
@@ -36,8 +36,8 @@ public class JointWheel extends JointBase {
 
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -53,7 +53,7 @@ public class JointWheel extends JointBase {
      * @param dampingRatio     Suspension damping ratio, one indicates critical damping.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointWheel(World world, PhysicsBody bodyA, PhysicsBody bodyB, Vector2 anchor, Vector2 axis, float maxMotorTorque, float motorSpeed, float dampingRatio, boolean collideConnected) {
+    public JointWheel(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, Vector2 anchor, Vector2 axis, float maxMotorTorque, float motorSpeed, float dampingRatio, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), anchor, axis, maxMotorTorque, motorSpeed, dampingRatio, collideConnected);
     }
 

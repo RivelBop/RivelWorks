@@ -5,7 +5,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.FrictionJoint;
 import com.badlogic.gdx.physics.box2d.joints.FrictionJointDef;
-import com.rivelbop.rivelworks.physics2d.body.PhysicsBody;
+import com.rivelbop.rivelworks.physics2d.body.PhysicsBody2D;
 
 /**
  * Friction Joint, is used for top-down friction. It provides 2D translational friction and angular friction.
@@ -32,8 +32,8 @@ public class JointFriction extends JointBase {
         definition.maxTorque = maxTorque;
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -54,8 +54,8 @@ public class JointFriction extends JointBase {
         definition.maxTorque = maxTorque;
         definition.collideConnected = collideConnected;
 
-        super.definition = definition;
-        joint = world.createJoint(definition);
+        this.definition = definition;
+        this.joint = world.createJoint(definition);
     }
 
     /**
@@ -70,7 +70,7 @@ public class JointFriction extends JointBase {
      * @param maxTorque        The maximum torque friction in N-m.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointFriction(World world, PhysicsBody bodyA, PhysicsBody bodyB, float x, float y, float maxForce, float maxTorque, boolean collideConnected) {
+    public JointFriction(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, float x, float y, float maxForce, float maxTorque, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), x, y, maxForce, maxTorque, collideConnected);
     }
 
@@ -84,7 +84,7 @@ public class JointFriction extends JointBase {
      * @param maxTorque        The maximum torque friction in N-m.
      * @param collideConnected Enable/disable collisions between the two bodies.
      */
-    public JointFriction(World world, PhysicsBody bodyA, PhysicsBody bodyB, float maxForce, float maxTorque, boolean collideConnected) {
+    public JointFriction(World world, PhysicsBody2D bodyA, PhysicsBody2D bodyB, float maxForce, float maxTorque, boolean collideConnected) {
         this(world, bodyA.getBody(), bodyB.getBody(), maxForce, maxTorque, collideConnected);
     }
 
