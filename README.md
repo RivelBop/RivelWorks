@@ -24,9 +24,11 @@ Most of the features we provide within RivelWorks are simplified wrappers of var
  * And More...(Font, Batch, Interpolation, and more Wrappers)
  * SteamWorks Integration (COMING SOON)
  ## Getting Started
-Thankfully, libGDX handles most of the setup process for you, without the need to download the framework for yourself. They offer a convenient [setup tool](https://libgdx.com/dev/#how-to-get-started-with-libgdx "libGDX Setup Page") that automates most of the project creation process. Once you have opened the setup tool, insert your project's properties and ensure you have ALL OF THE OFFICIAL EXTENSIONS SELECTED to ensure that RivelWorks will have all the libraries necessary to function. For any other additional libraries, check out our [build.gradle](build.gradle) for all the libraries utilized.
+Thankfully, libGDX handles most of the setup process for you, without the need to download the framework for yourself. They offer a convenient [setup tool](https://libgdx.com/dev/#how-to-get-started-with-libgdx "libGDX Setup Page") that automates most of the project creation process. Once you have opened the setup tool, insert your project's properties and ensure you have ALL OF THE OFFICIAL EXTENSIONS SELECTED to ensure that RivelWorks will have all the libraries necessary to function. For the additional libraries, check out our [build.gradle](build.gradle).
  
 Once your project is created, download the latest [release](https://github.com/RivelBop/RivelWorks/releases) of RivelWorks, extract the source code, head into the "core/src/" directory of the source code, copy the folder starting with "com", head into the "core/src" directory of your newly generated project, and paste the copied folder.
+
+Optionally, you can simply just download the entire game engine and build your project off of it, no setup process necessary!
  
 Once the steps above are completed, simply import your project into the IDE of your choosing and enjoy!
 ## Documentation
@@ -42,3 +44,4 @@ The following are sources from where some of the code of RivelWorks is derived:
 * Advanced Audio: [TuningFork](https://github.com/Hangman/TuningFork "TuningFork Github")
 * GLTF Support: [gdx-gltf](https://github.com/mgsx-dev/gdx-gltf "gdx-gltf Github")
 * Obfuscation: [proguard](https://www.guardsquare.com/proguard "ProGuard Website")
+* TexturePacker/StartupHelper: [libgdx-texturepacker](https://github.com/tommyettinger/libgdx-texturepacker "libgdx-texturepacker Github")

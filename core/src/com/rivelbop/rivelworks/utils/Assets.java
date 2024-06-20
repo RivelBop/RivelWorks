@@ -2,13 +2,9 @@ package com.rivelbop.rivelworks.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.ParticleEffectLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
-import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.Disposable;
 
 import java.io.File;
@@ -17,7 +13,7 @@ import java.util.Objects;
 /**
  * A simpler and secured {@link AssetManager}.
  *
- * @author David Jerzak
+ * @author David Jerzak (RivelBop)
  */
 public class Assets implements Disposable {
     /**
@@ -29,25 +25,11 @@ public class Assets implements Disposable {
      * Initializes the {@link #ASSET_MANAGER} with all the necessary loaders.
      */
     public Assets() {
-        ASSET_MANAGER = new AssetManager(new InternalFileHandleResolver());
+        InternalFileHandleResolver resolver = new InternalFileHandleResolver();
+        ASSET_MANAGER = new AssetManager(resolver, true);
         ASSET_MANAGER.setLoader(
                 FreeTypeFontGenerator.class,
-                new FreeTypeFontGeneratorLoader(
-                        new InternalFileHandleResolver()
-                )
-        );
-        ASSET_MANAGER.setLoader(
-                BitmapFont.class,
-                ".ttf",
-                new FreetypeFontLoader(
-                        new InternalFileHandleResolver()
-                )
-        );
-        ASSET_MANAGER.setLoader(
-                ParticleEffect.class,
-                new ParticleEffectLoader(
-                        new InternalFileHandleResolver()
-                )
+                new FreeTypeFontGeneratorLoader(resolver)
         );
     }
 

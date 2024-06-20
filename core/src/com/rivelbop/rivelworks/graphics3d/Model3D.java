@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g3d.loader.G3dModelLoader;
 import com.badlogic.gdx.graphics.g3d.loader.ObjLoader;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.UBJsonReader;
 
 /**
  * Creates a {@link ModelInstance} without having to create a {@link ObjLoader}, {@link G3dModelLoader}, or {@link Model}.
@@ -23,11 +24,20 @@ public class Model3D extends ModelInstance implements Disposable {
      * @param modelFile OBJ 3D Model File
      */
     public Model3D(FileHandle modelFile) {
+        // Load OBJ Model
         this(modelFile.extension().equals("obj") ?
                 new ObjLoader().loadModel(modelFile) :
-                modelFile.extension().equals("g3dj") ?
-                        new G3dModelLoader(new JsonReader()).loadModel(modelFile) :
-                        new Model());
+
+                // Load G3DB Model
+                modelFile.extension().equals("g3db") ?
+                        new G3dModelLoader(new UBJsonReader()).loadModel(modelFile) :
+
+                        // Load G3DJ Model
+                        modelFile.extension().equals("g3dj") ?
+                                new G3dModelLoader(new JsonReader()).loadModel(modelFile) :
+
+                                // UNRECOGNIZED
+                                new Model());
     }
 
     /**

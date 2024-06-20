@@ -1,9 +1,3 @@
-# IMPORTANT!
-# If an error is caused when obfuscating, clear all 'keep class' and 'keepclassmembers' commands referring to libgdx
-# and uncomment '-keep class com.badlogic.**' and '-keepclassmembers class com.badlogic.** { *; }'
-# Alternatively, if you would like to attempt to fix the error, read the console error logs associated with your
-# exported game, you may be able to add additional 'keep' commands associated with those problematic classes/methods
-
 -verbose
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
@@ -14,41 +8,15 @@
 -dontwarn org.objectweb.**
 -dontwarn com.esotericsoftware.**
 
-#-keep class com.badlogic.**
+-keep class com.badlogic.**
 -keep class org.lwjgl.**
 -keep class org.objectweb.**
 -keep class com.esotericsoftware.**
 
-#-keepclassmembers class com.badlogic.** { *; }
+-keepclassmembers class com.badlogic.** { *; }
 -keepclassmembers class org.lwjgl.** { *; }
 -keepclassmembers class org.objectweb.** { *; }
 -keepclassmembers class com.esotericsoftware.** { *; }
-
-# TO BE REMOVED IF ERROR IS CAUSED
--keep class com.badlogic.gdx.audio.**
--keep class com.badlogic.gdx.backends.**
--keep class com.badlogic.gdx.scenes.**
--keep class com.badlogic.gdx.graphics.*
--keep class com.badlogic.gdx.graphics.g2d.BitmapFont
--keep class com.badlogic.gdx.graphics.Color
-
--keepclassmembers class com.badlogic.gdx.backends.** { *; }
--keepclassmembers class com.badlogic.gdx.audio.** { *; }
--keepclassmembers class com.badlogic.gdx.scenes.** { *; }
--keepclassmembers class com.badlogic.gdx.graphics.* { *; }
--keepclassmembers class com.badlogic.gdx.graphics.g2d.BitmapFont { *; }
--keepclassmembers class com.badlogic.gdx.graphics.Color { *; }
-
--keepclassmembers class com.badlogic.gdx.physics.box2d.World {
-   boolean contactFilter(long, long);
-   void    beginContact(long);
-   void    endContact(long);
-   void    preSolve(long, long);
-   void    postSolve(long, long);
-   boolean reportFixture(long);
-   float   reportRayFixture(long, float, float, float, float, float);
-}
-# REMOVAL ENDS HERE
 
 -keepclasseswithmembernames class * {
   native <methods>;
