@@ -59,12 +59,8 @@ public class Network {
      *
      * @param client The client to connect to the Network's server.
      */
-    public void connectClient(Client client) {
-        try {
-            client.connect(5000, IP, port, port);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void connectClient(Client client) throws IOException {
+        client.connect(5000, IP, port, port);
     }
 
     /**
@@ -86,15 +82,11 @@ public class Network {
      * @param listener The listener to add to the server.
      * @return Server with all Network data (IP, Port, Classes).
      */
-    public Server newServer(Listener listener) {
+    public Server newServer(Listener listener) throws IOException {
         Server server = new Server();
         register(server);
         server.addListener(listener);
-        try {
-            server.bind(new InetSocketAddress(IP, port), new InetSocketAddress(IP, port));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        server.bind(new InetSocketAddress(IP, port), new InetSocketAddress(IP, port));
         return server;
     }
 

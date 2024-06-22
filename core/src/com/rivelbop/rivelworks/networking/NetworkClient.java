@@ -45,7 +45,7 @@ public abstract class NetworkClient implements Listener, Disposable {
     /**
      * Starts and connects the client to the port data provided by the {@link #network}.
      */
-    public void connect() {
+    public void connect() throws IOException {
         client.start();
         network.connectClient(client);
     }

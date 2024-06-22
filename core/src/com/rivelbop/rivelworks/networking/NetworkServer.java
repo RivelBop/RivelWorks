@@ -53,7 +53,7 @@ public abstract class NetworkServer implements Listener, Disposable {
      *
      * @param network The network used to create and register the server.
      */
-    public NetworkServer(Network network) {
+    public NetworkServer(Network network) throws IOException {
         this.server = network.newServer(this);
         this.network = network;
     }
