@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.utils.Disposable;
+import com.esotericsoftware.minlog.Log;
 
 import java.io.File;
 import java.util.Objects;
@@ -53,10 +54,10 @@ public class Assets implements Disposable {
         File file = Gdx.files.internal(fileName).file();
         if (!file.exists()) {
             ASSET_MANAGER.load(fileName, type);
-            System.out.println("LOADED: " + fileName);
+            Log.debug("LOADED: " + fileName);
             return true;
         }
-        System.err.println("ERROR LOADING: " + fileName);
+        Log.error("ERROR LOADING: " + fileName);
 
         // If failed, create a new asset directory to store the external assets
         File externalAssetsFolder = new File(ASSET_MANAGER.hashCode() + "_assets");
@@ -64,11 +65,11 @@ public class Assets implements Disposable {
 
         // Move the external asset to the newly created asset directory
         if (file.renameTo(new File(externalAssetsFolder.getPath() + File.separator + fileName))) {
-            System.out.println("FILE MOVED: " + fileName);
+            Log.debug("FILE MOVED: " + fileName);
             load(fileName, type);
             return true;
         }
-        System.err.println("ERROR MOVING FILE: " + fileName);
+        Log.error("ERROR MOVING FILE: " + fileName);
         return false;
     }
 
@@ -91,7 +92,7 @@ public class Assets implements Disposable {
      */
     public void unload(String fileName) {
         ASSET_MANAGER.unload(fileName);
-        System.out.println("UNLOADED: " + fileName);
+        Log.debug("UNLOADED: " + fileName);
     }
 
     /**

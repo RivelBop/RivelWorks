@@ -3,6 +3,7 @@ package com.rivelbop.rivelworks;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.bullet.Bullet;
+import com.esotericsoftware.minlog.Log;
 
 /**
  * Used as the "Main" class of the game.
@@ -19,12 +20,12 @@ public class RivelWorks extends Game {
     public static void init(boolean box2D, boolean bullet) {
         if (box2D) {
             Box2D.init();
-            System.out.println("Box2D has been initialized!");
+            Log.debug("Box2D has been initialized!");
         }
 
         if (bullet) {
             Bullet.init();
-            System.out.println("Bullet has been initialized!");
+            Log.debug("Bullet has been initialized!");
         }
     }
 

@@ -5,6 +5,7 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.minlog.Log;
 
 import java.util.HashMap;
 
@@ -33,7 +34,7 @@ public class GamePad implements ControllerListener {
         if (controller != null) {
             controller.addListener(this);
         } else {
-            System.err.println("No Controller Detected!");
+            Log.error("No Controller Detected!");
         }
     }
 
@@ -48,7 +49,7 @@ public class GamePad implements ControllerListener {
         if (controller != null) {
             controller.addListener(this);
         } else {
-            System.err.println("No Controller Detected!");
+            Log.error("No Controller Detected!");
         }
     }
 
@@ -63,7 +64,7 @@ public class GamePad implements ControllerListener {
         if (controller != null) {
             controller.addListener(this);
         } else {
-            System.err.println("No Controller Detected!");
+            Log.error("No Controller Detected!");
         }
     }
 
@@ -83,7 +84,7 @@ public class GamePad implements ControllerListener {
      */
     @Override
     public void connected(Controller controller) {
-        System.out.println("Controller has been connected!");
+        Log.debug("Controller has been connected!");
     }
 
     /**
@@ -93,7 +94,7 @@ public class GamePad implements ControllerListener {
      */
     @Override
     public void disconnected(Controller controller) {
-        System.out.println("Controller has been disconnected!");
+        Log.debug("Controller has been disconnected!");
         JUST_PRESSED_MAPPINGS.clear();
     }
 

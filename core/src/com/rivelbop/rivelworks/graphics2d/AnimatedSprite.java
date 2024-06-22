@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+import com.esotericsoftware.minlog.Log;
 
 import java.util.HashMap;
 
@@ -168,7 +169,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
             return;
         }
 
-        System.err.println("Animation {" + animation + "} is not a part of this sprites animation list!");
+        Log.error("Animation {" + animation + "} is not a part of this sprites animation list!");
     }
 
     /**
@@ -184,7 +185,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
             return;
         }
 
-        System.err.println("Animation {" + animation + "} is not a part of this sprites animation list!");
+        Log.error("Animation {" + animation + "} is not a part of this sprites animation list!");
     }
 
     /**

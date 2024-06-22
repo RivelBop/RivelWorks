@@ -5,6 +5,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.EndPoint;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -106,7 +107,7 @@ public class Network {
             return;
         }
 
-        System.err.println("Port must be between 0 to 65535!");
+        Log.error("Port must be between 0 to 65535!");
     }
 
     /**

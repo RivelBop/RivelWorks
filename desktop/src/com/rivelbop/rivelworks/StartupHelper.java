@@ -1,5 +1,20 @@
 package com.rivelbop.rivelworks;
 
+/*
+ * Copyright 2020 damios
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at:
+ * https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import org.lwjgl.system.macosx.LibC;
 
 import java.io.BufferedReader;
@@ -53,12 +68,17 @@ public class StartupHelper {
         String osName = System.getProperty("os.name").toLowerCase();
         if (!osName.contains("mac")) {
             if (osName.contains("windows")) {
-// Here, we are trying to work around an issue with how LWJGL3 loads its extracted .dll files.
-// By default, LWJGL3 extracts to the directory specified by "java.io.tmpdir", which is usually the user's home.
-// If the user's name has non-ASCII (or some non-alphanumeric) characters in it, that would fail.
-// By extracting to the relevant "ProgramData" folder, which is usually "C:\ProgramData", we avoid this.
+                // Here, we are trying to work around an issue with how LWJGL3 loads its extracted .dll files.
+                // By default, LWJGL3 extracts to the directory specified by "java.io.tmpdir", which is usually the user's home.
+                // If the user's name has non-ASCII (or some non-alphanumeric) characters in it, that would fail.
+                // By extracting to the relevant "ProgramData" folder, which is usually "C:\ProgramData", we avoid this.
                 System.setProperty("java.io.tmpdir", System.getenv("ProgramData") + "/libGDX-temp");
             }
+            return false;
+        }
+
+        // There is no need for -XstartOnFirstThread on Graal native image
+        if (!System.getProperty("org.graalvm.nativeimage.imagecode", "").isEmpty()) {
             return false;
         }
 
@@ -80,14 +100,15 @@ public class StartupHelper {
         // Restart the JVM with -XstartOnFirstThread
         ArrayList<String> jvmArgs = new ArrayList<>();
         String separator = FileSystems.getDefault().getSeparator();
+
         // The following line is used assuming you target Java 8, the minimum for LWJGL3.
         String javaExecPath = System.getProperty("java.home") + separator + "bin" + separator + "java";
+
         // If targeting Java 9 or higher, you could use the following instead of the above line:
-        //String javaExecPath = ProcessHandle.current().info().command().orElseThrow();
+        /* String javaExecPath = ProcessHandle.current().info().command().orElseThrow(); */
 
         if (!(new File(javaExecPath)).exists()) {
-            System.err.println(
-                    "A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
+            System.err.println("A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
             return false;
         }
 
