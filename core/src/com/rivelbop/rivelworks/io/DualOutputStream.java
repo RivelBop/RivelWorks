@@ -23,7 +23,7 @@ public class DualOutputStream extends PrintStream {
      */
     public DualOutputStream(OutputStream primary, PrintStream secondary) {
         super(primary);
-        this.OTHER_PRINT_STREAM = secondary;
+        OTHER_PRINT_STREAM = secondary;
     }
 
     @Override

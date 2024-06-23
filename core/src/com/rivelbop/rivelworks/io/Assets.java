@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.utils.Disposable;
 import com.esotericsoftware.minlog.Log;
+import de.pottgames.tuningfork.SoundBuffer;
+import de.pottgames.tuningfork.SoundBufferLoader;
 
 import java.io.File;
 import java.util.Objects;
@@ -27,11 +29,9 @@ public class Assets implements Disposable {
      */
     public Assets() {
         InternalFileHandleResolver resolver = new InternalFileHandleResolver();
-        ASSET_MANAGER = new AssetManager(resolver, true);
-        ASSET_MANAGER.setLoader(
-                FreeTypeFontGenerator.class,
-                new FreeTypeFontGeneratorLoader(resolver)
-        );
+        this.ASSET_MANAGER = new AssetManager(resolver, true);
+        ASSET_MANAGER.setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
+        ASSET_MANAGER.setLoader(SoundBuffer.class, new SoundBufferLoader(resolver));
     }
 
     /**

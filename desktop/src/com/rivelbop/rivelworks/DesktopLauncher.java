@@ -10,10 +10,11 @@ public class DesktopLauncher {
 
 		// Handles the LWJGL3 Window
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+        config.disableAudio(true); // Audio is disabled to use TuningFork
         config.useVsync(true);
         config.setResizable(false);
         config.setTitle("RivelWorks");
         config.setWindowedMode(1280, 720);
-        new Lwjgl3Application(new RivelWorks(), config);
+        new Lwjgl3Application(new RivelWorksGame(), config);
     }
 }
