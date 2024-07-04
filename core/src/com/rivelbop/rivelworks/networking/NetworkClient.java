@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 
@@ -13,6 +14,8 @@ import java.io.IOException;
  * @author David Jerzak (RivelBop)
  */
 public abstract class NetworkClient implements Listener, Disposable {
+    private static final String LOG_TAG = NetworkClient.class.getSimpleName();
+
     /**
      * Handles client connection and packet data.
      */
@@ -44,6 +47,8 @@ public abstract class NetworkClient implements Listener, Disposable {
 
     /**
      * Starts and connects the client to the port data provided by the {@link #network}.
+     *
+     * @throws IOException Client is unable to connect to the server/network.
      */
     public void connect() throws IOException {
         client.start();
@@ -55,6 +60,7 @@ public abstract class NetworkClient implements Listener, Disposable {
      */
     public void disconnect() {
         client.stop();
+        Log.info(LOG_TAG, "Disconnected.");
     }
 
     /**

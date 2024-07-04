@@ -18,7 +18,7 @@ public final class Font implements Disposable {
     /**
      * The font generated from {@link FontBuilder}.
      */
-    private final BitmapFont bitmapFont;
+    private final BitmapFont BITMAP_FONT;
 
     /**
      * Creates a font from the provided {@link BitmapFont}.
@@ -26,7 +26,7 @@ public final class Font implements Disposable {
      * @param font The BitmapFont to utilize.
      */
     private Font(BitmapFont font) {
-        this.bitmapFont = font;
+        this.BITMAP_FONT = font;
     }
 
     /**
@@ -38,7 +38,7 @@ public final class Font implements Disposable {
      * @param y     The y-position of the text.
      */
     public void draw(SpriteBatch batch, String text, float x, float y) {
-        bitmapFont.draw(batch, text, x, y);
+        BITMAP_FONT.draw(batch, text, x, y);
     }
 
     /**
@@ -50,24 +50,24 @@ public final class Font implements Disposable {
      * @param y     The center y-position of the text.
      */
     public void drawCenter(SpriteBatch batch, String text, float x, float y) {
-        GlyphLayout layout = new GlyphLayout(bitmapFont, text);
-        bitmapFont.draw(batch, text, x - layout.width / 2f, y + layout.height / 2f);
+        GlyphLayout layout = new GlyphLayout(BITMAP_FONT, text);
+        BITMAP_FONT.draw(batch, text, x - layout.width / 2f, y + layout.height / 2f);
     }
 
     /**
      * @return The {@link BitmapFont} generated from the {@link FontBuilder}.
      */
     public BitmapFont getBitmapFont() {
-        return bitmapFont;
+        return BITMAP_FONT;
     }
 
     /**
-     * Removes {@link #bitmapFont} from memory.
+     * Removes {@link #BITMAP_FONT} from memory.
      * Should be called if the object is no longer in use and not a part of an {@link AssetManager}.
      */
     @Override
     public void dispose() {
-        bitmapFont.dispose();
+        BITMAP_FONT.dispose();
     }
 
     /**

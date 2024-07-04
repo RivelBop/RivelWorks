@@ -74,6 +74,6 @@ public class Model3D extends ModelInstance implements Disposable {
      */
     @Override
     public void dispose() {
-        model.dispose();
+        super.model.dispose();
     }
 }

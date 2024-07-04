@@ -1,5 +1,7 @@
 package com.rivelbop.rivelworks;
 
+import com.badlogic.gdx.ApplicationLogger;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.esotericsoftware.minlog.Log;
@@ -16,6 +18,8 @@ import java.io.FileNotFoundException;
  * @author David/Philip Jerzak (RivelBop)
  */
 public final class RivelWorks {
+    private static final String LOG_TAG = RivelWorks.class.getSimpleName();
+
     /**
      * TuningFork Audio Instance
      */
@@ -27,9 +31,10 @@ public final class RivelWorks {
     /**
      * Used to initialize all necessary libraries for RivelWorks to function (Logger, Audio, Box2D, Bullet).
      *
-     * @param logLevel The level of logging to display.
-     * @param box2D    Should Box2D be initialized?
-     * @param bullet   Should JBullet be initialized?
+     * @param logLevel      The level of logging to display.
+     * @param logOutputFile The file to log to.
+     * @param box2D         Should Box2D be initialized?
+     * @param bullet        Should JBullet be initialized?
      */
     public static void init(int logLevel, String logOutputFile, boolean box2D, boolean bullet) {
         // Creates a basic logging system
@@ -39,41 +44,74 @@ public final class RivelWorks {
             try {
                 outputStream = new ConsoleFileOutputStream(logOutputFile);
             } catch (FileNotFoundException e) {
-                System.err.println("Trouble logging to provided file!");
+                Log.error(LOG_TAG, "Trouble logging to provided file!");
                 throw new RuntimeException(e);
             }
             System.setOut(outputStream);
             System.setErr(outputStream);
-            Log.debug("Logging to file {" + logOutputFile + "} and the console!");
+            Log.debug(LOG_TAG, "Logging to file {" + logOutputFile + "} and the console!");
         }
-        Log.debug("Logger has initialized!");
+
+        // Configures libGDX logger to the 'minlog' library
+        Gdx.app.setApplicationLogger(new ApplicationLogger() {
+            @Override
+            public void log(String tag, String message) {
+                Log.info(tag, message);
+            }
+
+            @Override
+            public void log(String tag, String message, Throwable exception) {
+                Log.info(tag, message, exception);
+            }
+
+            @Override
+            public void error(String tag, String message) {
+                Log.error(tag, message);
+            }
+
+            @Override
+            public void error(String tag, String message, Throwable exception) {
+                Log.error(tag, message, exception);
+            }
+
+            @Override
+            public void debug(String tag, String message) {
+                Log.debug(tag, message);
+            }
+
+            @Override
+            public void debug(String tag, String message, Throwable exception) {
+                Log.debug(tag, message, exception);
+            }
+        });
+        Log.info(LOG_TAG, "Logger has initialized!");
 
         // Creates an instance of TuningFork Audio integrated with the logging configuration
         AudioConfig audioConfig = new AudioConfig();
         audioConfig.setLogger(new TuningForkLogger() {
             @Override
             public void error(Class<?> aClass, String s) {
-                Log.error("[" + aClass.getSimpleName() + "] " + s);
+                Log.error(aClass.getSimpleName(), s);
             }
 
             @Override
             public void warn(Class<?> aClass, String s) {
-                Log.warn("[" + aClass.getSimpleName() + "] " + s);
+                Log.warn(aClass.getSimpleName(), s);
             }
 
             @Override
             public void info(Class<?> aClass, String s) {
-                Log.info("[" + aClass.getSimpleName() + "] " + s);
+                Log.info(aClass.getSimpleName(), s);
             }
 
             @Override
             public void debug(Class<?> aClass, String s) {
-                Log.debug("[" + aClass.getSimpleName() + "] " + s);
+                Log.debug(aClass.getSimpleName(), s);
             }
 
             @Override
             public void trace(Class<?> aClass, String s) {
-                Log.trace("[" + aClass.getSimpleName() + "] " + s);
+                Log.trace(aClass.getSimpleName(), s);
             }
         });
         audio = Audio.init(audioConfig);
@@ -81,15 +119,15 @@ public final class RivelWorks {
         // Initialize physics libraries
         if (box2D) {
             Box2D.init();
-            Log.debug("Box2D has initialized!");
+            Log.info(LOG_TAG, "Box2D has initialized!");
         }
 
         if (bullet) {
             Bullet.init();
-            Log.debug("Bullet has initialized!");
+            Log.info(LOG_TAG, "Bullet has initialized!");
         }
 
-        Log.debug("RivelWorks has initialized!");
+        Log.info(LOG_TAG, "RivelWorks has initialized!");
     }
 
     /**

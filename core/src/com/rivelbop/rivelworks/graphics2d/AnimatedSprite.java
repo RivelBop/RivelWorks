@@ -17,6 +17,8 @@ import java.util.HashMap;
  * @author David Jerzak (RivelBop)
  */
 public class AnimatedSprite extends Sprite implements Disposable {
+    private static final String LOG_TAG = AnimatedSprite.class.getSimpleName();
+
     /**
      * Stores the selected atlas file for use.
      */
@@ -80,17 +82,21 @@ public class AnimatedSprite extends Sprite implements Disposable {
      * @param y             The initial Y-position of the sprite.
      */
     public AnimatedSprite(TextureAtlas atlas, String baseAnimation, float frameDelay, Animation.PlayMode playMode, float x, float y) {
-        // Create a sprite with the first frame of the base animation and provided position
-        super(atlas.findRegion(baseAnimation));
-        setPosition(x, y);
+        this(atlas, baseAnimation, frameDelay, playMode);
+        super.setPosition(x, y);
+    }
 
-        // Initialize animation variables
-        this.ATLAS = atlas;
-        this.ANIMATIONS = new HashMap<>();
-        this.ANIMATIONS.put(baseAnimation, new AtlasAnimation(atlas, baseAnimation, frameDelay, playMode));
-        this.currentAnimation = ANIMATIONS.get(baseAnimation);
-        this.FRAME_DELAY = frameDelay;
-        this.PLAY_MODE = playMode;
+    /**
+     * Updates the animation timer, sprite flipping direction, and region of the sprite to the current animation frame.
+     */
+    public void update() {
+        animationTime += Gdx.graphics.getDeltaTime();
+        currentAnimation.update(animationTime).flip(currentAnimation.update(animationTime).isFlipX() != isFlipX(), false);
+        super.setRegion(currentAnimation.update(animationTime));
+
+        if (currentAnimation.getAnimation().isAnimationFinished(animationTime)) {
+            animationTime = 0f;
+        }
     }
 
     /**
@@ -99,8 +105,17 @@ public class AnimatedSprite extends Sprite implements Disposable {
      * @param spriteBatch The batch to which the sprite will be rendered/drawn to.
      */
     public void render(SpriteBatch spriteBatch) {
+        super.draw(spriteBatch);
+    }
+
+    /**
+     * Updates and renders the sprite to the provided {@link SpriteBatch}.
+     *
+     * @param spriteBatch The batch to which the sprite will be rendered/drawn to.
+     */
+    public void updateAndRender(SpriteBatch spriteBatch) {
         update();
-        draw(spriteBatch);
+        render(spriteBatch);
     }
 
     /**
@@ -110,17 +125,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
      * @param name The name of the atlas region that will supply the current animation.
      */
     public void addAnimation(String name) {
-        ANIMATIONS.put(name, new AtlasAnimation(ATLAS, name, FRAME_DELAY, PLAY_MODE));
-    }
-
-    /**
-     * Adds the provided {@link AtlasAnimation} into {@link #ANIMATIONS}.
-     *
-     * @param name      The name of the animation that will go into {@link #ANIMATIONS}.
-     * @param animation The animation that will be added along with the provided name.
-     */
-    public void addAnimation(String name, AtlasAnimation animation) {
-        ANIMATIONS.put(name, animation);
+        addAnimation(name, new AtlasAnimation(ATLAS, name, FRAME_DELAY, PLAY_MODE));
     }
 
     /**
@@ -132,7 +137,17 @@ public class AnimatedSprite extends Sprite implements Disposable {
      * @param playMode   The 'loop type' of the animation.
      */
     public void addAnimation(String name, float frameDelay, Animation.PlayMode playMode) {
-        ANIMATIONS.put(name, new AtlasAnimation(ATLAS, name, frameDelay, playMode));
+        addAnimation(name, new AtlasAnimation(ATLAS, name, frameDelay, playMode));
+    }
+
+    /**
+     * Adds the provided {@link AtlasAnimation} into {@link #ANIMATIONS}.
+     *
+     * @param name      The name of the animation that will go into {@link #ANIMATIONS}.
+     * @param animation The animation that will be added along with the provided name.
+     */
+    public void addAnimation(String name, AtlasAnimation animation) {
+        ANIMATIONS.put(name, animation);
     }
 
     /**
@@ -169,7 +184,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
             return;
         }
 
-        Log.error("Animation {" + animation + "} is not a part of this sprites animation list!");
+        Log.error(LOG_TAG, "Animation {" + animation + "} is not a part of this sprites animation list!");
     }
 
     /**
@@ -185,20 +200,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
             return;
         }
 
-        Log.error("Animation {" + animation + "} is not a part of this sprites animation list!");
-    }
-
-    /**
-     * Updates the animation timer, sprite flipping direction, and region of the sprite to the current animation frame.
-     */
-    private void update() {
-        animationTime += Gdx.graphics.getDeltaTime();
-        currentAnimation.update(animationTime).flip(currentAnimation.update(animationTime).isFlipX() != isFlipX(), false);
-        setRegion(currentAnimation.update(animationTime));
-
-        if (currentAnimation.getAnimation().isAnimationFinished(animationTime)) {
-            animationTime = 0f;
-        }
+        Log.error(LOG_TAG, "Animation {" + animation + "} is not a part of this sprites animation list!");
     }
 
     /**

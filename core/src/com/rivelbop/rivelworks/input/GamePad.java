@@ -1,5 +1,6 @@
-package com.rivelbop.rivelworks.utils;
+package com.rivelbop.rivelworks.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerMapping;
@@ -7,7 +8,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.minlog.Log;
 
-import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Used as a simplified wrapper around the GDX Controller library.
@@ -15,27 +16,23 @@ import java.util.HashMap;
  * @author David Jerzak (RivelBop)
  */
 public class GamePad implements ControllerListener {
+    private static final String LOG_TAG = GamePad.class.getSimpleName();
+
     /**
      * Keeps track of all buttons that have just been pressed to provide functionality for {@link #isButtonJustPressed(int)}.
      */
-    private final HashMap<Integer, Boolean> JUST_PRESSED_MAPPINGS = new HashMap<>();
+    private final HashSet<Integer> JUST_PRESSED_BUTTONS = new HashSet<>();
 
     /**
      * The default GDX controller, used as the backbone for a GamePad.
      */
-    private final Controller controller;
+    private final Controller CONTROLLER;
 
     /**
      * Grabs the current/recently used controller and sets its listener to the default within the class.
      */
     public GamePad() {
-        controller = Controllers.getCurrent();
-
-        if (controller != null) {
-            controller.addListener(this);
-        } else {
-            Log.error("No Controller Detected!");
-        }
+        this(Controllers.getCurrent());
     }
 
     /**
@@ -44,28 +41,7 @@ public class GamePad implements ControllerListener {
      * @param index The index of the controller.
      */
     public GamePad(int index) {
-        controller = getControllers().get(index);
-
-        if (controller != null) {
-            controller.addListener(this);
-        } else {
-            Log.error("No Controller Detected!");
-        }
-    }
-
-    /**
-     * Creates a GamePad with the provided controller and sets its listener to the default within the class.
-     *
-     * @param controller The controller to pass into the GamePad.
-     */
-    public GamePad(Controller controller) {
-        this.controller = controller;
-
-        if (controller != null) {
-            controller.addListener(this);
-        } else {
-            Log.error("No Controller Detected!");
-        }
+        this(getControllers().get(index));
     }
 
     /**
@@ -78,13 +54,28 @@ public class GamePad implements ControllerListener {
     }
 
     /**
+     * Creates a GamePad with the provided controller and sets its listener to the default within the class.
+     *
+     * @param controller The controller to pass into the GamePad.
+     */
+    public GamePad(Controller controller) {
+        this.CONTROLLER = controller;
+
+        if (isConnected()) {
+            controller.addListener(this);
+        } else {
+            Log.error(LOG_TAG, "No controller detected.");
+        }
+    }
+
+    /**
      * Called when controller is connected.
      *
      * @param controller The current GamePad/controller.
      */
     @Override
     public void connected(Controller controller) {
-        Log.debug("Controller has been connected!");
+        Log.info(LOG_TAG, "Controller {" + controller.getPlayerIndex() + "} has been connected.");
     }
 
     /**
@@ -94,8 +85,8 @@ public class GamePad implements ControllerListener {
      */
     @Override
     public void disconnected(Controller controller) {
-        Log.debug("Controller has been disconnected!");
-        JUST_PRESSED_MAPPINGS.clear();
+        Log.info(LOG_TAG, "Controller[" + controller.getPlayerIndex() + "] has been disconnected.");
+        JUST_PRESSED_BUTTONS.clear();
     }
 
     /**
@@ -107,6 +98,7 @@ public class GamePad implements ControllerListener {
      */
     @Override
     public boolean buttonDown(Controller controller, int i) {
+        Gdx.app.postRunnable(() -> JUST_PRESSED_BUTTONS.add(i));
         return false;
     }
 
@@ -119,7 +111,7 @@ public class GamePad implements ControllerListener {
      */
     @Override
     public boolean buttonUp(Controller controller, int i) {
-        JUST_PRESSED_MAPPINGS.put(i, false);
+        Gdx.app.postRunnable(() -> JUST_PRESSED_BUTTONS.remove(i));
         return false;
     }
 
@@ -143,8 +135,7 @@ public class GamePad implements ControllerListener {
      * @return If the button is held.
      */
     public boolean isButtonPressed(int button) {
-        JUST_PRESSED_MAPPINGS.put(button, true);
-        return controller.getButton(button);
+        return isConnected() && CONTROLLER.getButton(button);
     }
 
     /**
@@ -154,16 +145,7 @@ public class GamePad implements ControllerListener {
      * @return If the button is just pressed.
      */
     public boolean isButtonJustPressed(int button) {
-        Boolean pressed = JUST_PRESSED_MAPPINGS.get(button);
-        if (pressed == null) {
-            pressed = false;
-        }
-
-        if (!pressed) {
-            JUST_PRESSED_MAPPINGS.put(button, true);
-            return controller.getButton(button);
-        }
-        return false;
+        return !JUST_PRESSED_BUTTONS.contains(button) && isButtonPressed(button);
     }
 
     /**
@@ -173,7 +155,7 @@ public class GamePad implements ControllerListener {
      * @return The axis value of the joystick that is checked.
      */
     public float getJoystick(int joystick) {
-        return controller.getAxis(joystick);
+        return isConnected() ? CONTROLLER.getAxis(joystick) : 0f;
     }
 
     /**
@@ -181,8 +163,8 @@ public class GamePad implements ControllerListener {
      *
      * @return The controller button/joystick mapping.
      */
-    public ControllerMapping mapping() {
-        return controller.getMapping();
+    public ControllerMapping buttons() {
+        return isConnected() ? CONTROLLER.getMapping() : null;
     }
 
     /**
@@ -192,8 +174,8 @@ public class GamePad implements ControllerListener {
      * @param strength The strength of the vibration (0f-1f).
      */
     public void vibrate(int millis, float strength) {
-        if (controller.canVibrate() && !controller.isVibrating()) {
-            controller.startVibration(millis, strength);
+        if (isConnected()) {
+            CONTROLLER.startVibration(millis, strength);
         }
     }
 
@@ -201,7 +183,9 @@ public class GamePad implements ControllerListener {
      * Stops controller vibration.
      */
     public void stopVibration() {
-        controller.cancelVibration();
+        if (isConnected()) {
+            CONTROLLER.cancelVibration();
+        }
     }
 
     /**
@@ -210,7 +194,7 @@ public class GamePad implements ControllerListener {
      * @return Controller connection status.
      */
     public boolean isConnected() {
-        return controller.isConnected();
+        return CONTROLLER != null && CONTROLLER.isConnected();
     }
 
     /**
@@ -219,7 +203,7 @@ public class GamePad implements ControllerListener {
      * @return Default LibGDX controller object.
      */
     public Controller getController() {
-        return controller;
+        return CONTROLLER;
     }
 
     /**

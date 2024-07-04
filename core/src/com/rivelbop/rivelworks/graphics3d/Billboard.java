@@ -20,11 +20,11 @@ public class Billboard extends Decal implements Disposable {
      */
     public Billboard(TextureRegion textureRegion, boolean isTransparent) {
         // Same procedure as Decal.newDecal(TextureRegion, isTransparent);
-        this.setTextureRegion(textureRegion);
-        this.setBlending(isTransparent ? 770 : -1, isTransparent ? 771 : -1);
-        this.dimensions.x = (float) textureRegion.getRegionWidth();
-        this.dimensions.y = (float) textureRegion.getRegionHeight();
-        this.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        super.setTextureRegion(textureRegion);
+        super.setBlending(isTransparent ? 770 : -1, isTransparent ? 771 : -1);
+        super.dimensions.x = (float) textureRegion.getRegionWidth();
+        super.dimensions.y = (float) textureRegion.getRegionHeight();
+        super.setColor(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
     /**
@@ -34,15 +34,7 @@ public class Billboard extends Decal implements Disposable {
      * @param isTransparent Whether the texture is transparent or not.
      */
     public Billboard(Texture texture, boolean isTransparent) {
-        // Create a texture region based on the provided texture
-        TextureRegion textureRegion = new TextureRegion(texture);
-
-        // Same procedure as Decal.newDecal(TextureRegion, isTransparent);
-        this.setTextureRegion(textureRegion);
-        this.setBlending(isTransparent ? 770 : -1, isTransparent ? 771 : -1);
-        this.dimensions.x = (float) textureRegion.getRegionWidth();
-        this.dimensions.y = (float) textureRegion.getRegionHeight();
-        this.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        this(new TextureRegion(texture), isTransparent);
     }
 
     /**
@@ -51,7 +43,7 @@ public class Billboard extends Decal implements Disposable {
      * @param camera The camera the Billboard will face.
      */
     public void lookAt(Camera camera) {
-        lookAt(camera.position, camera.up);
+        super.lookAt(camera.position, camera.up);
     }
 
     /**
@@ -59,6 +51,6 @@ public class Billboard extends Decal implements Disposable {
      */
     @Override
     public void dispose() {
-        getTextureRegion().getTexture().dispose();
+        super.getTextureRegion().getTexture().dispose();
     }
 }

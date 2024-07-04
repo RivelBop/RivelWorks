@@ -65,7 +65,7 @@ project(":core") {
         implementation 'com.github.Anuken:gdx-postprocessing:1.07'
         implementation 'com.github.crykn:kryonet:2.22.9'
         implementation 'com.github.crykn:libgdx-screenmanager:v0.7.0'
-        implementation 'com.github.mgsx-dev.gdx-gltf:core:2.1.0'
+        implementation 'com.github.mgsx-dev.gdx-gltf:core:2.2.1'
         implementation 'com.github.Hangman:TuningFork:4.3.0'
         implementation 'com.github.tommyettinger:libgdx-texturepacker:1.12.1.0'
     }

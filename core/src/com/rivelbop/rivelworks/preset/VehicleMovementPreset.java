@@ -92,46 +92,89 @@ public class VehicleMovementPreset {
         }
     }
 
+    /**
+     * Sets the vehicle's sprite.
+     *
+     * @param sprite The sprite to set.
+     */
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
 
+    /**
+     * Sets the vehicle's acceleration.
+     *
+     * @param acceleration The acceleration to set.
+     */
     public void setAcceleration(float acceleration) {
         this.acceleration = Math.abs(acceleration);
     }
 
+    /**
+     * Sets the vehicle's deceleration.
+     *
+     * @param deceleration The deceleration to set.
+     */
     public void setDeceleration(float deceleration) {
         this.deceleration = Math.abs(deceleration);
     }
 
+    /**
+     * Sets the vehicle's maximum speed.
+     *
+     * @param maxSpeed The speed to set.
+     */
     public void setMaxSpeed(float maxSpeed) {
         this.maxSpeed = Math.abs(maxSpeed);
     }
 
+    /**
+     * Sets the vehicle's rotation speed.
+     *
+     * @param rotationSpeed The speed to set.
+     */
     public void setRotationSpeed(float rotationSpeed) {
         this.rotationSpeed = Math.abs(rotationSpeed);
     }
 
+    /**
+     * @return The vehicle's sprite.
+     */
     public Sprite getSprite() {
         return sprite;
     }
 
+    /**
+     * @return The vehicle's acceleration.
+     */
     public float getAcceleration() {
         return acceleration;
     }
 
+    /**
+     * @return The vehicle's deceleration.
+     */
     public float getDeceleration() {
         return deceleration;
     }
 
+    /**
+     * @return The vehicle's maximum speed.
+     */
     public float getMaxSpeed() {
         return maxSpeed;
     }
 
+    /**
+     * @return The vehicle's rotation speed.
+     */
     public float getRotationSpeed() {
         return rotationSpeed;
     }
 
+    /**
+     * @return The vehicle's velocity.
+     */
     public float getVelocity() {
         return velocity;
     }

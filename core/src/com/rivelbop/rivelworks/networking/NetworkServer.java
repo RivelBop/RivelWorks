@@ -4,6 +4,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
+import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 
@@ -13,6 +14,8 @@ import java.io.IOException;
  * @author David Jerzak (RivelBop)
  */
 public abstract class NetworkServer implements Listener, Disposable {
+    private static final String LOG_TAG = NetworkServer.class.getSimpleName();
+
     /**
      * Handles server connection and packet data.
      */
@@ -52,6 +55,7 @@ public abstract class NetworkServer implements Listener, Disposable {
      * Creates a new server using the provided {@link Network}.
      *
      * @param network The network used to create and register the server.
+     * @throws IOException Server is unable to bind to the network.
      */
     public NetworkServer(Network network) throws IOException {
         this.server = network.newServer(this);
@@ -63,6 +67,7 @@ public abstract class NetworkServer implements Listener, Disposable {
      */
     public void start() {
         server.start();
+        Log.info(LOG_TAG, "Started.");
     }
 
     /**
@@ -70,6 +75,7 @@ public abstract class NetworkServer implements Listener, Disposable {
      */
     public void stop() {
         server.stop();
+        Log.info(LOG_TAG, "Stopped.");
     }
 
     /**

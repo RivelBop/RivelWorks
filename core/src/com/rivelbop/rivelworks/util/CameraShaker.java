@@ -1,4 +1,4 @@
-package com.rivelbop.rivelworks.utils;
+package com.rivelbop.rivelworks.util;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.MathUtils;
@@ -26,7 +26,7 @@ import com.badlogic.gdx.math.Vector3;
  * - renamed variables so to not look like python
  */
 public class CameraShaker {
-    private final Camera camera;
+    private final Camera CAMERA;
     private boolean isShaking = false;
     private float origShakeRadius;
     private float minimumShakeRadius;
@@ -34,7 +34,7 @@ public class CameraShaker {
     private float shakeRadius;
     private float randomAngle;
     private float timer;
-    private final Vector3 offset;
+    private final Vector3 OFFSET;
     private Vector3 currentPosition;
     public Vector3 origPosition;
 
@@ -48,8 +48,8 @@ public class CameraShaker {
      */
     public CameraShaker(Camera camera, float shakeRadius, float minimumShakeRadius, float radiusFallOffFactor) {
         checkParameters(shakeRadius, minimumShakeRadius, radiusFallOffFactor);
-        this.camera = camera;
-        this.offset = new Vector3();
+        this.CAMERA = camera;
+        this.OFFSET = new Vector3();
         this.currentPosition = new Vector3();
         this.origPosition = camera.position.cpy();
         reset();
@@ -71,8 +71,8 @@ public class CameraShaker {
         minimumShakeRadius = 3f;
         radiusFallOffFactor = 0.90f;
         checkParameters(shakeRadius, minimumShakeRadius, radiusFallOffFactor);
-        this.camera = camera;
-        this.offset = new Vector3();
+        this.CAMERA = camera;
+        this.OFFSET = new Vector3();
         this.currentPosition = new Vector3();
         this.origPosition = camera.position.cpy();
         reset();
@@ -104,8 +104,8 @@ public class CameraShaker {
             computeCameraOffset();
             computeCurrentPosition();
             diminishShake();
-            camera.position.set(currentPosition);
-            camera.update();
+            CAMERA.position.set(currentPosition);
+            CAMERA.update();
             timer = 0;
         }
     }
@@ -157,13 +157,13 @@ public class CameraShaker {
     private void computeCameraOffset() {
         float sine = MathUtils.sinDeg(randomAngle);
         float cosine = MathUtils.cosDeg(randomAngle);
-        offset.x = cosine * shakeRadius;
-        offset.y = sine * shakeRadius;
+        OFFSET.x = cosine * shakeRadius;
+        OFFSET.y = sine * shakeRadius;
     }
 
     private void computeCurrentPosition() {
-        currentPosition.x = origPosition.x + offset.x;
-        currentPosition.y = origPosition.y + offset.y;
+        currentPosition.x = origPosition.x + OFFSET.x;
+        currentPosition.y = origPosition.y + OFFSET.y;
     }
 
     private void diminishShake() {

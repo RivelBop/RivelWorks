@@ -51,18 +51,34 @@ public class TopDownMovementPreset {
         }
     }
 
+    /**
+     * Sets this presets' sprite to move.
+     *
+     * @param sprite The sprite to move.
+     */
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
 
+    /**
+     * Sets this presets' movement speed.
+     *
+     * @param speed The speed to set.
+     */
     public void setSpeed(float speed) {
         this.speed = Math.abs(speed);
     }
 
+    /**
+     * @return The presets' sprite.
+     */
     public Sprite getSprite() {
         return sprite;
     }
 
+    /**
+     * @return The speed of the sprite.
+     */
     public float getSpeed() {
         return speed;
     }

@@ -1,4 +1,4 @@
-package com.rivelbop.rivelworks.utils;
+package com.rivelbop.rivelworks.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;

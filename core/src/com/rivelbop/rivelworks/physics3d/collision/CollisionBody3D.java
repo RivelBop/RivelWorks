@@ -1,9 +1,12 @@
 package com.rivelbop.rivelworks.physics3d.collision;
 
+import com.badlogic.gdx.math.Quaternion;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.*;
 import com.badlogic.gdx.utils.Disposable;
 import com.rivelbop.rivelworks.graphics3d.shape.Shape3D;
 import com.rivelbop.rivelworks.physics3d.Physics3D;
+import com.rivelbop.rivelworks.physics3d.physics.PhysicsBody3D;
 
 /**
  * A basic JBullet 3D collision object.
@@ -68,8 +71,28 @@ public class CollisionBody3D implements Disposable {
      * @return True if the number of contacts between the bodies is greater than 0.
      */
     public boolean isColliding(CollisionBody3D otherBody) {
+        return isColliding(otherBody.BODY);
+    }
+
+    /**
+     * Checks to see if the provided physics body collides with the {@link #BODY}.
+     *
+     * @param otherBody The physics body to check with.
+     * @return True if the number of contacts between the bodies is greater than 0.
+     */
+    public boolean isColliding(PhysicsBody3D otherBody) {
+        return isColliding(otherBody.getBody());
+    }
+
+    /**
+     * Checks to see if the provided body collides with the {@link #BODY}.
+     *
+     * @param otherBody The body to check with.
+     * @return True if the number of contacts between the bodies is greater than 0.
+     */
+    public boolean isColliding(btCollisionObject otherBody) {
         CollisionObjectWrapper col1 = new CollisionObjectWrapper(BODY);
-        CollisionObjectWrapper col2 = new CollisionObjectWrapper(otherBody.BODY);
+        CollisionObjectWrapper col2 = new CollisionObjectWrapper(otherBody);
 
         btCollisionAlgorithm algorithm = DISPATCHER.findAlgorithm(col1.wrapper, col2.wrapper, null, 0);
 
@@ -129,6 +152,24 @@ public class CollisionBody3D implements Disposable {
      */
     public btCollisionObject getBody() {
         return BODY;
+    }
+
+    /**
+     * @return The body's position.
+     */
+    public Vector3 getPosition() {
+        Vector3 position = Vector3.Zero;
+        BODY.getWorldTransform().getTranslation(position);
+        return position;
+    }
+
+    /**
+     * @return The body's rotation.
+     */
+    public Quaternion getRotation() {
+        Quaternion rotation = new Quaternion();
+        BODY.getWorldTransform().getRotation(rotation);
+        return rotation;
     }
 
     /**

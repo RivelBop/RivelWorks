@@ -1,6 +1,7 @@
 package com.rivelbop.rivelworks.map2d;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.esotericsoftware.minlog.Log;
 import com.rivelbop.rivelworks.physics2d.body.StaticBody2D;
 
 /**
@@ -23,6 +25,8 @@ import com.rivelbop.rivelworks.physics2d.body.StaticBody2D;
  * @author David/Philip Jerzak (RivelBop)
  */
 public abstract class TileMap implements Disposable {
+    private static final String LOG_TAG = TileMap.class.getSimpleName();
+
     /**
      * Stores the data of the tile map.
      */
@@ -39,7 +43,8 @@ public abstract class TileMap implements Disposable {
      * @param fileName The name of the 'tmx' file to load.
      */
     public TileMap(String fileName) {
-        map = new TmxMapLoader().load(fileName);
+        this.map = new TmxMapLoader().load(fileName);
+        Log.info(LOG_TAG, "LOADED: " + fileName);
     }
 
     /**
@@ -71,49 +76,8 @@ public abstract class TileMap implements Disposable {
      * @param <T>    Specifies only Shape2D types can be provided.
      * @return Bounding shape list.
      */
-    @SuppressWarnings("unchecked")
     public <T extends Shape2D> Array<T> getBoundingShapes(Class<T> tClass, int index) {
-        if (tClass == Rectangle.class) {
-            Array<RectangleMapObject> rectangleMapObjects = map.getLayers().get(index).getObjects().getByType(RectangleMapObject.class);
-            Array<Rectangle> rectangles = new Array<>();
-
-            for (RectangleMapObject r : rectangleMapObjects) {
-                rectangles.add(r.getRectangle());
-            }
-
-            return (Array<T>) rectangles;
-        } else if (tClass == Polygon.class) {
-            Array<PolygonMapObject> polygonMapObjects = map.getLayers().get(index).getObjects().getByType(PolygonMapObject.class);
-            Array<Polygon> polygons = new Array<>();
-
-            for (PolygonMapObject p : polygonMapObjects) {
-                polygons.add(p.getPolygon());
-            }
-
-            return (Array<T>) polygons;
-        } else if (tClass == Ellipse.class) {
-            Array<EllipseMapObject> ellipseMapObjects = map.getLayers().get(index).getObjects().getByType(EllipseMapObject.class);
-            Array<Ellipse> ellipses = new Array<>();
-
-            for (EllipseMapObject e : ellipseMapObjects) {
-                ellipses.add(e.getEllipse());
-            }
-
-            return (Array<T>) ellipses;
-        } else if (tClass == Shape2D.class) {
-            Array<Rectangle> rectangles = getBoundingShapes(Rectangle.class, index);
-            Array<Polygon> polygons = getBoundingShapes(Polygon.class, index);
-            Array<Ellipse> ellipses = getBoundingShapes(Ellipse.class, index);
-
-            Array<Shape2D> shapes = new Array<>();
-            shapes.addAll(rectangles);
-            shapes.addAll(polygons);
-            shapes.addAll(ellipses);
-
-            return (Array<T>) shapes;
-        }
-
-        return null;
+        return getBoundingShapes(tClass, map.getLayers().get(index));
     }
 
     /**
@@ -124,10 +88,22 @@ public abstract class TileMap implements Disposable {
      * @param <T>    Specifies only Shape2D types can be provided.
      * @return Bounding shape list.
      */
-    @SuppressWarnings("unchecked")
     public <T extends Shape2D> Array<T> getBoundingShapes(Class<T> tClass, String name) {
+        return getBoundingShapes(tClass, map.getLayers().get(name));
+    }
+
+    /**
+     * Returns a list of bounding shapes found with the same type and tiled map layer.
+     *
+     * @param tClass   Used to 'identify' the shape's class type.
+     * @param mapLayer The map layer to gather bounding shapes from.
+     * @param <T>      Specifies only Shape2D types can be provided.
+     * @return Bounding shape list.
+     */
+    @SuppressWarnings("unchecked")
+    private <T extends Shape2D> Array<T> getBoundingShapes(Class<T> tClass, MapLayer mapLayer) {
         if (tClass == Rectangle.class) {
-            Array<RectangleMapObject> rectangleMapObjects = map.getLayers().get(name).getObjects().getByType(RectangleMapObject.class);
+            Array<RectangleMapObject> rectangleMapObjects = mapLayer.getObjects().getByType(RectangleMapObject.class);
             Array<Rectangle> rectangles = new Array<>();
 
             for (RectangleMapObject r : rectangleMapObjects) {
@@ -136,7 +112,7 @@ public abstract class TileMap implements Disposable {
 
             return (Array<T>) rectangles;
         } else if (tClass == Polygon.class) {
-            Array<PolygonMapObject> polygonMapObjects = map.getLayers().get(name).getObjects().getByType(PolygonMapObject.class);
+            Array<PolygonMapObject> polygonMapObjects = mapLayer.getObjects().getByType(PolygonMapObject.class);
             Array<Polygon> polygons = new Array<>();
 
             for (PolygonMapObject p : polygonMapObjects) {
@@ -145,7 +121,7 @@ public abstract class TileMap implements Disposable {
 
             return (Array<T>) polygons;
         } else if (tClass == Ellipse.class) {
-            Array<EllipseMapObject> ellipseMapObjects = map.getLayers().get(name).getObjects().getByType(EllipseMapObject.class);
+            Array<EllipseMapObject> ellipseMapObjects = mapLayer.getObjects().getByType(EllipseMapObject.class);
             Array<Ellipse> ellipses = new Array<>();
 
             for (EllipseMapObject e : ellipseMapObjects) {
@@ -154,9 +130,9 @@ public abstract class TileMap implements Disposable {
 
             return (Array<T>) ellipses;
         } else if (tClass == Shape2D.class) {
-            Array<Rectangle> rectangles = getBoundingShapes(Rectangle.class, name);
-            Array<Polygon> polygons = getBoundingShapes(Polygon.class, name);
-            Array<Ellipse> ellipses = getBoundingShapes(Ellipse.class, name);
+            Array<Rectangle> rectangles = getBoundingShapes(Rectangle.class, mapLayer);
+            Array<Polygon> polygons = getBoundingShapes(Polygon.class, mapLayer);
+            Array<Ellipse> ellipses = getBoundingShapes(Ellipse.class, mapLayer);
 
             Array<Shape2D> shapes = new Array<>();
             shapes.addAll(rectangles);
@@ -177,27 +153,7 @@ public abstract class TileMap implements Disposable {
      * @param PPM   Pixel to meter conversion.
      */
     public void boundingShapesToPhysicsWorld(int index, World world, float PPM) {
-        Array<Rectangle> rectangles = getBoundingShapes(Rectangle.class, index);
-        Array<Polygon> polygons = getBoundingShapes(Polygon.class, index);
-
-        for (Rectangle r : rectangles) {
-            StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
-                setAsBox(r.width / 2f / PPM, r.height / 2f / PPM);
-            }});
-            staticBody.getBody().setTransform((r.x + r.width / 2f) / PPM, (r.y + r.height / 2f) / PPM, 0f);
-        }
-
-        for (Polygon p : polygons) {
-            float[] vertices = p.getVertices();
-            for (int i = 0; i < vertices.length; i++) {
-                vertices[i] /= PPM;
-            }
-
-            StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
-                set(vertices);
-            }});
-            staticBody.getBody().setTransform(p.getX() / PPM, p.getY() / PPM, 0f);
-        }
+        boundingShapesToPhysicsWorld(map.getLayers().get(index), world, PPM);
     }
 
     /**
@@ -208,26 +164,41 @@ public abstract class TileMap implements Disposable {
      * @param PPM   Pixel to meter conversion.
      */
     public void boundingShapesToPhysicsWorld(String name, World world, float PPM) {
-        Array<Rectangle> rectangles = getBoundingShapes(Rectangle.class, name);
-        Array<Polygon> polygons = getBoundingShapes(Polygon.class, name);
+        boundingShapesToPhysicsWorld(map.getLayers().get(name), world, PPM);
+    }
 
-        for (Rectangle r : rectangles) {
-            StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
-                setAsBox(r.width / 2f / PPM, r.height / 2f / PPM);
-            }});
-            staticBody.getBody().setTransform((r.x + r.width / 2f) / PPM, (r.y + r.height / 2f) / PPM, 0f);
+    /**
+     * Adds all applicable {@link Shape2D} objects, {@link Rectangle} and {@link Polygon}, from the layer into the provided physics world.
+     *
+     * @param mapLayer The layer to get the shapes from.
+     * @param world    The physics world to add the shapes to.
+     * @param PPM      Pixel to meter conversion.
+     */
+    private void boundingShapesToPhysicsWorld(MapLayer mapLayer, World world, float PPM) {
+        Array<Rectangle> rectangles = getBoundingShapes(Rectangle.class, mapLayer);
+        Array<Polygon> polygons = getBoundingShapes(Polygon.class, mapLayer);
+
+        if (rectangles != null) {
+            for (Rectangle r : rectangles) {
+                StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
+                    setAsBox(r.width / 2f / PPM, r.height / 2f / PPM);
+                }});
+                staticBody.getBody().setTransform((r.x + r.width / 2f) / PPM, (r.y + r.height / 2f) / PPM, 0f);
+            }
         }
 
-        for (Polygon p : polygons) {
-            float[] vertices = p.getVertices();
-            for (int i = 0; i < vertices.length; i++) {
-                vertices[i] /= PPM;
-            }
+        if (polygons != null) {
+            for (Polygon p : polygons) {
+                float[] vertices = p.getVertices();
+                for (int i = 0; i < vertices.length; i++) {
+                    vertices[i] /= PPM;
+                }
 
-            StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
-                set(vertices);
-            }});
-            staticBody.getBody().setTransform(p.getX() / PPM, p.getY() / PPM, 0f);
+                StaticBody2D staticBody = new StaticBody2D(world, new PolygonShape() {{
+                    set(vertices);
+                }});
+                staticBody.getBody().setTransform(p.getX() / PPM, p.getY() / PPM, 0f);
+            }
         }
     }
 

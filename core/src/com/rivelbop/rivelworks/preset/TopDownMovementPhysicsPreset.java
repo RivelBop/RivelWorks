@@ -52,7 +52,7 @@ public class TopDownMovementPhysicsPreset {
      * Updates the bodies velocity according to the speed and updates its sprite.
      */
     public void update() {
-        Body body = this.BODY.getBody();
+        Body body = BODY.getBody();
         body.setLinearVelocity(Vector2.Zero);
 
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -71,26 +71,48 @@ public class TopDownMovementPhysicsPreset {
         sprite.setPosition(body.getPosition().x * PPM - sprite.getWidth() / 2f, body.getPosition().y * PPM - sprite.getHeight() / 2f);
     }
 
+    /**
+     * Sets this presets' sprite to move.
+     *
+     * @param sprite The sprite to move.
+     */
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
 
+    /**
+     * Sets this presets' movement speed.
+     *
+     * @param speed The speed to set.
+     */
     public void setSpeed(float speed) {
         this.speed = Math.abs(speed) / PPM;
     }
 
+    /**
+     * @return The presets' sprite.
+     */
     public Sprite getSprite() {
         return sprite;
     }
 
+    /**
+     * @return The presets' physics body.
+     */
     public DynamicBody2D getBody() {
         return BODY;
     }
 
+    /**
+     * @return The speed of the physics body.
+     */
     public float getSpeed() {
         return speed * PPM;
     }
 
+    /**
+     * @return The pixel per meter conversion constant.
+     */
     public float getPPM() {
         return PPM;
     }

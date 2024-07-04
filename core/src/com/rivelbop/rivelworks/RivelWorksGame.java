@@ -12,7 +12,7 @@ public class RivelWorksGame extends Game {
     @Override
     public void create() {
         // Adjust to your desires
-        RivelWorks.init(Log.LEVEL_DEBUG, "RIVELWORKS_LOG.txt", true, true);
+        RivelWorks.init(Log.LEVEL_DEBUG, "rivelworks_log.txt", true, true);
         // YOUR CODE BELOW
     }
 

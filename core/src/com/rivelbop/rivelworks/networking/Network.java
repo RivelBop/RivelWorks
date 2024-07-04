@@ -19,6 +19,8 @@ import java.util.HashSet;
  */
 @SuppressWarnings({"Class", "rawtypes"})
 public class Network {
+    private static final String LOG_TAG = Network.class.getSimpleName();
+
     /**
      * A set of packet classes registered under the network.
      */
@@ -59,9 +61,11 @@ public class Network {
      * Connects the provided client to a server by using all the necessary Network details (IP, Port).
      *
      * @param client The client to connect to the Network's server.
+     * @throws IOException Client is unable to connect to the server/network.
      */
     public void connectClient(Client client) throws IOException {
         client.connect(5000, IP, port, port);
+        Log.info(LOG_TAG, "New client connected to {" + IP + ":" + port + "}.");
     }
 
     /**
@@ -82,6 +86,7 @@ public class Network {
      *
      * @param listener The listener to add to the server.
      * @return Server with all Network data (IP, Port, Classes).
+     * @throws IOException Server is unable to bind to the Network's IP and Port.
      */
     public Server newServer(Listener listener) throws IOException {
         Server server = new Server();
@@ -107,7 +112,7 @@ public class Network {
             return;
         }
 
-        Log.error("Port must be between 0 to 65535!");
+        Log.error(LOG_TAG, "Port must be between 0 to 65535!");
     }
 
     /**

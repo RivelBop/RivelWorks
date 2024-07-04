@@ -49,7 +49,7 @@ public class AtlasAnimation {
      */
     public TextureAtlas.AtlasRegion update() {
         animationTime += Gdx.graphics.getDeltaTime();
-        return ANIMATION.getKeyFrame(animationTime);
+        return update(animationTime);
     }
 
     /**

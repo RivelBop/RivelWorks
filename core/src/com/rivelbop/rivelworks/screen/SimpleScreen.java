@@ -2,6 +2,7 @@ package com.rivelbop.rivelworks.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.esotericsoftware.minlog.Log;
 
 /**
  * A simplified screen class that removes the less used Screen methods.
@@ -9,10 +10,12 @@ import com.badlogic.gdx.Screen;
  * @author David Jerzak (RivelBop)
  */
 public abstract class SimpleScreen implements Screen {
+    private static final String LOG_TAG = SimpleScreen.class.getSimpleName();
+
     /**
      * Stores a reference to the {@link Game} that is handling the {@link Screen}.
      */
-    public final Game game;
+    public final Game GAME;
 
     /**
      * Creates a new screen with the provided {@link Game}.
@@ -20,7 +23,7 @@ public abstract class SimpleScreen implements Screen {
      * @param game A reference to the game that handles this Screen.
      */
     public SimpleScreen(Game game) {
-        this.game = game;
+        this.GAME = game;
     }
 
     /**
@@ -43,5 +46,6 @@ public abstract class SimpleScreen implements Screen {
     @Override
     public void hide() {
         dispose();
+        Log.debug(LOG_TAG, "{" + getClass().getSimpleName() + "} was automatically disposed.");
     }
 }

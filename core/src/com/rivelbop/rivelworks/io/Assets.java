@@ -19,6 +19,8 @@ import java.util.Objects;
  * @author David Jerzak (RivelBop)
  */
 public class Assets implements Disposable {
+    private static final String LOG_TAG = Assets.class.getSimpleName();
+
     /**
      * The asset manager that stores all the assets that will be loaded and unloaded.
      */
@@ -47,17 +49,16 @@ public class Assets implements Disposable {
      * @param fileName The name of the file to load.
      * @param type     The file type to load.
      * @param <T>      TYPE
-     * @return Whether the file has or hasn't successfully loaded.
      */
-    public <T> boolean load(String fileName, Class<T> type) {
+    public <T> void load(String fileName, Class<T> type) {
         // Check and load the asset file
         File file = Gdx.files.internal(fileName).file();
         if (!file.exists()) {
             ASSET_MANAGER.load(fileName, type);
-            Log.debug("LOADED: " + fileName);
-            return true;
+            Log.info(LOG_TAG, "LOADED: " + fileName);
+            return;
         }
-        Log.error("ERROR LOADING: " + fileName);
+        Log.error(LOG_TAG, "ERROR LOADING: " + fileName);
 
         // If failed, create a new asset directory to store the external assets
         File externalAssetsFolder = new File(ASSET_MANAGER.hashCode() + "_assets");
@@ -65,12 +66,11 @@ public class Assets implements Disposable {
 
         // Move the external asset to the newly created asset directory
         if (file.renameTo(new File(externalAssetsFolder.getPath() + File.separator + fileName))) {
-            Log.debug("FILE MOVED: " + fileName);
+            Log.debug(LOG_TAG, "FILE MOVED: " + fileName);
             load(fileName, type);
-            return true;
+            return;
         }
-        Log.error("ERROR MOVING FILE: " + fileName);
-        return false;
+        Log.error(LOG_TAG, "ERROR MOVING FILE: " + fileName);
     }
 
     /**
@@ -92,7 +92,7 @@ public class Assets implements Disposable {
      */
     public void unload(String fileName) {
         ASSET_MANAGER.unload(fileName);
-        Log.debug("UNLOADED: " + fileName);
+        Log.debug(LOG_TAG, "UNLOADED: " + fileName);
     }
 
     /**
@@ -108,6 +108,7 @@ public class Assets implements Disposable {
             directory.delete();
         }
         ASSET_MANAGER.dispose();
+        Log.debug(LOG_TAG, "DISPOSED");
     }
 
     /**
