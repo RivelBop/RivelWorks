@@ -1,4 +1,4 @@
-package com.rivelbop.rivelworks;
+package com.rivelbop.rivelworks.util;
 
 /*
  * Copyright 2020 damios
@@ -15,6 +15,7 @@ package com.rivelbop.rivelworks;
  * limitations under the License.
  */
 
+import com.esotericsoftware.minlog.Log;
 import org.lwjgl.system.macosx.LibC;
 
 import java.io.BufferedReader;
@@ -35,7 +36,9 @@ import java.util.ArrayList;
  * @author damios
  */
 public class StartupHelper {
-    private static final String JVM_RESTARTED_ARG = "jvmIsRestarted";
+    private static final String
+            LOG_TAG = StartupHelper.class.getSimpleName(),
+            JVM_RESTARTED_ARG = "jvmIsRestarted";
 
     private StartupHelper() {
         throw new UnsupportedOperationException();
@@ -92,8 +95,7 @@ public class StartupHelper {
         // check whether the JVM was previously restarted
         // avoids looping, but most certainly leads to a crash
         if ("true".equals(System.getProperty(JVM_RESTARTED_ARG))) {
-            System.err.println(
-                    "There was a problem evaluating whether the JVM was started with the -XstartOnFirstThread argument.");
+            Log.error(LOG_TAG, "There was a problem evaluating whether the JVM was started with the -XstartOnFirstThread argument.");
             return false;
         }
 
@@ -108,7 +110,7 @@ public class StartupHelper {
         /* String javaExecPath = ProcessHandle.current().info().command().orElseThrow(); */
 
         if (!(new File(javaExecPath)).exists()) {
-            System.err.println("A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
+            Log.error(LOG_TAG, "A Java installation could not be found. If you are distributing this app with a bundled JRE, be sure to set the -XstartOnFirstThread argument manually!");
             return false;
         }
 
@@ -124,7 +126,7 @@ public class StartupHelper {
             if (trace.length > 0) {
                 mainClass = trace[trace.length - 1].getClassName();
             } else {
-                System.err.println("The main class could not be determined.");
+                Log.error(LOG_TAG, "The main class could not be determined.");
                 return false;
             }
         }
@@ -142,14 +144,13 @@ public class StartupHelper {
                 String line;
 
                 while ((line = processOutput.readLine()) != null) {
-                    System.out.println(line);
+                    Log.info(LOG_TAG, line);
                 }
 
                 process.waitFor();
             }
         } catch (Exception e) {
-            System.err.println("There was a problem restarting the JVM");
-            e.printStackTrace();
+            Log.error(LOG_TAG, "There was a problem restarting the JVM", e);
         }
 
         return true;

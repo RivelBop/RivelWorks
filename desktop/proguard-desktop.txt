@@ -7,23 +7,28 @@
 -dontwarn org.lwjgl.**
 -dontwarn org.objectweb.**
 -dontwarn com.esotericsoftware.**
+-dontwarn jsinterop.**
+-dontwarn de.pottgames.tuningfork.**
+-dontwarn com.rivelbop.rivelworks.**
 
 -keep class com.badlogic.**
 -keep class org.lwjgl.**
 -keep class org.objectweb.**
 -keep class com.esotericsoftware.**
+-keep class jsinterop.**
+-keep class de.pottgames.tuningfork.**
+-keep class com.rivelbop.rivelworks.**
 
 -keepclassmembers class com.badlogic.** { *; }
 -keepclassmembers class org.lwjgl.** { *; }
 -keepclassmembers class org.objectweb.** { *; }
 -keepclassmembers class com.esotericsoftware.** { *; }
+-keepclassmembers class jsinterop.** { *; }
+-keepclassmembers class de.pottgames.tuningfork.** { *; }
+-keepclassmembers class com.rivelbop.rivelworks.** { *; }
 
 -keepclasseswithmembernames class * {
   native <methods>;
-}
-
--keep public class com.rivelbop.velocitysmash.DesktopLauncher {
-    public static void main(java.lang.String[]);
 }
 
 -keepclassmembers,allowoptimization enum * {

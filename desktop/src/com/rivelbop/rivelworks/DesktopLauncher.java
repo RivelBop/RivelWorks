@@ -2,6 +2,7 @@ package com.rivelbop.rivelworks;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+import com.rivelbop.rivelworks.util.StartupHelper;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {

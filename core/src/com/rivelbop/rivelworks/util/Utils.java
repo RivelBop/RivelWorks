@@ -33,9 +33,53 @@ public final class Utils {
 
     /**
      * Clears the screen for 2D games (only clears the color buffer).
+     *
+     * @param color The color to clear the color buffer to.
+     */
+    public static void clearScreen2D(Color color) {
+        clearScreen2D(color.r, color.g, color.b, color.a);
+    }
+
+    /**
+     * Clears the screen for 2D games (only clears the color buffer).
+     *
+     * @param r red
+     * @param g green
+     * @param b blue
+     * @param a alpha
+     */
+    public static void clearScreen2D(float r, float g, float b, float a) {
+        Gdx.gl.glClearColor(r, g, b, a);
+        clearScreen2D();
+    }
+
+    /**
+     * Clears the screen for 2D games (only clears the color buffer).
      */
     public static void clearScreen2D() {
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+    /**
+     * Clears the screen for 3D games (clears both the color and depth buffers).
+     *
+     * @param color The color to clear the color buffer to.
+     */
+    public static void clearScreen3D(Color color) {
+        clearScreen3D(color.r, color.g, color.b, color.a);
+    }
+
+    /**
+     * Clears the screen for 3D games (clears both the color and depth buffers).
+     *
+     * @param r red
+     * @param g green
+     * @param b blue
+     * @param a alpha
+     */
+    public static void clearScreen3D(float r, float g, float b, float a) {
+        Gdx.gl.glClearColor(r, g, b, a);
+        clearScreen3D();
     }
 
     /**

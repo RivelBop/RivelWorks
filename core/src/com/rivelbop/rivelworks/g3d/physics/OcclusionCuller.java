@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.bullet.collision.*;
 import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.Disposable;
+import com.rivelbop.rivelworks.g3d.physics.dynamic.PhysicsWorld3D;
 
 import java.nio.FloatBuffer;
 
@@ -37,6 +38,21 @@ import java.nio.FloatBuffer;
  * @author jsjolund
  */
 public abstract class OcclusionCuller implements Disposable {
+    public btDbvtBroadphase broadphase;
+    public Camera camera;
+
+    public OcclusionCuller() {
+    }
+
+    public OcclusionCuller(PhysicsWorld3D physicsWorld, Camera camera) {
+        this(physicsWorld.getBroadPhase(), camera);
+    }
+
+    public OcclusionCuller(btDbvtBroadphase broadphase, Camera camera) {
+        this.broadphase = broadphase;
+        this.camera = camera;
+    }
+
     protected class Collider extends ICollide {
         /**
          * Callback method for {@link btDbvt#collideKDOP}. The bounding volume tree node in the parameter is inside the camera
@@ -101,11 +117,13 @@ public abstract class OcclusionCuller implements Disposable {
 
     private static final int NUM_PLANES = 5;
     private static final int[] OCL_BUFFER_EXTENTS = new int[]{128, 256, 512, 32, 64};
-    private final FloatBuffer frustumNormals = BufferUtils.newFloatBuffer(NUM_PLANES * 4);
-    private final FloatBuffer frustumOffsets = BufferUtils.newFloatBuffer(NUM_PLANES);
+    private final FloatBuffer
+            frustumNormals = BufferUtils.newFloatBuffer(NUM_PLANES * 4),
+            frustumOffsets = BufferUtils.newFloatBuffer(NUM_PLANES);
     private final Collider collider = new Collider();
-    final Vector3 tmpV1 = new Vector3();
-    final Vector3 tmpV2 = new Vector3();
+    final Vector3
+            tmpV1 = new Vector3(),
+            tmpV2 = new Vector3();
     OcclusionBuffer oclBuffer = new OcclusionBuffer(OCL_BUFFER_EXTENTS[0], OCL_BUFFER_EXTENTS[0]);
 
     @Override
@@ -181,7 +199,35 @@ public abstract class OcclusionCuller implements Disposable {
      */
     public void performOcclusionCulling(btDbvtBroadphase broadphase, Camera camera) {
         oclBuffer.clear();
-        performOcclusionCulling(broadphase, oclBuffer, camera);
+        oclBuffer.setProjectionMatrix(camera.combined);
+        setFrustumPlanes(camera.frustum);
+        btDbvt.collideOCL(broadphase.getSet1().getRoot(), frustumNormals, frustumOffsets, camera.direction, NUM_PLANES, collider);
+        btDbvt.collideOCL(broadphase.getSet0().getRoot(), frustumNormals, frustumOffsets, camera.direction, NUM_PLANES, collider);
+    }
+
+    /**
+     * Performs occlusion culling using the Bullet method {@link btDbvt#collideOCL}. Finds all collision objects which are visible
+     * to the camera, where vision is not blocked (occluded) by another object. If a collision object from the broad phase is
+     * visible to the camera, a callback is made to {@link #onObjectVisible(btCollisionObject)}. Only collision objects for which
+     * {@link #isOccluder(btCollisionObject)} returns true can occlude others. These collision objects must have a
+     * {@link btBoxShape} collision shape. However, box occluders can block vision of any type of shape.
+     *
+     * @param physicsWorld The physics world to reference broad phase from.
+     * @param camera       Camera for which to perform occlusion culling.
+     */
+    public void performOcclusionCulling(PhysicsWorld3D physicsWorld, Camera camera) {
+        performOcclusionCulling(physicsWorld.getBroadPhase(), camera);
+    }
+
+    /**
+     * Performs occlusion culling using the Bullet method {@link btDbvt#collideOCL}. Finds all collision objects which are visible
+     * to the camera, where vision is not blocked (occluded) by another object. If a collision object from the broad phase is
+     * visible to the camera, a callback is made to {@link #onObjectVisible(btCollisionObject)}. Only collision objects for which
+     * {@link #isOccluder(btCollisionObject)} returns true can occlude others. These collision objects must have a
+     * {@link btBoxShape} collision shape. However, box occluders can block vision of any type of shape.
+     */
+    public void performOcclusionCulling() {
+        performOcclusionCulling(broadphase, camera);
     }
 
     /**

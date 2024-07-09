@@ -47,7 +47,7 @@ tasks.register('dist', Jar) {
 task obfuscate(dependsOn: dist, type: ProGuardTask) {
     // Files
     def inputFile = dist.outputs.files.singleFile.path
-    def outputJar = dist.destinationDirectory.file("rivelworks.jar") // Input export jar name here
+    def outputJar = dist.destinationDirectory.file("rivelworks-" + version.toString() + ".jar") // Input export jar name here
     def outputJarFilePath = outputJar.get().asFile.path
 
     // Task configuration
