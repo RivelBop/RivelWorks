@@ -62,11 +62,11 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        implementation 'com.github.Anuken:gdx-postprocessing:1.07'
-        implementation 'com.github.crykn:kryonet:2.22.9'
-        implementation 'com.github.crykn:libgdx-screenmanager:v0.7.0'
-        implementation 'com.github.mgsx-dev.gdx-gltf:core:2.2.1'
-        implementation 'com.github.Hangman:TuningFork:4.3.0'
-        implementation 'com.github.tommyettinger:libgdx-texturepacker:1.12.1.0'
+        api 'com.github.Anuken:gdx-postprocessing:1.07'
+        api 'com.github.crykn:kryonet:2.22.9'
+        api 'com.github.crykn:libgdx-screenmanager:v0.7.0'
+        api 'com.github.mgsx-dev.gdx-gltf:core:2.2.1'
+        api 'com.github.Hangman:TuningFork:4.3.0'
+        api 'com.github.tommyettinger:libgdx-texturepacker:1.12.1.0'
     }
 }

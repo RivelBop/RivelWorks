@@ -1,6 +1,7 @@
 package com.rivelbop.rivelworks.screen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.esotericsoftware.minlog.Log;
 
@@ -15,16 +16,7 @@ public abstract class SimpleScreen implements Screen {
     /**
      * Stores a reference to the {@link Game} that is handling the {@link Screen}.
      */
-    public final Game GAME;
-
-    /**
-     * Creates a new screen with the provided {@link Game}.
-     *
-     * @param game A reference to the game that handles this Screen.
-     */
-    public SimpleScreen(Game game) {
-        this.GAME = game;
-    }
+    public final Game GAME = (Game) Gdx.app.getApplicationListener();
 
     /**
      * Called when window is minimized, not commonly used.
