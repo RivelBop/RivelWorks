@@ -2,10 +2,12 @@ package com.rivelbop.rivelworks;
 
 import com.badlogic.gdx.ApplicationLogger;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.bullet.Bullet;
 import com.esotericsoftware.minlog.Log;
 import com.rivelbop.rivelworks.io.ConsoleFileOutputStream;
+import com.rivelbop.rivelworks.util.Utils;
 import de.pottgames.tuningfork.Audio;
 import de.pottgames.tuningfork.AudioConfig;
 import de.pottgames.tuningfork.logger.TuningForkLogger;
@@ -37,6 +39,8 @@ public final class RivelWorks {
      * @param bullet        Should JBullet be initialized?
      */
     public static void init(int logLevel, String logOutputFile, boolean box2D, boolean bullet) {
+        Utils.window = ((Lwjgl3Graphics) Gdx.graphics).getWindow().getWindowHandle();
+
         // Creates a basic logging system
         Log.set(logLevel);
         if (logOutputFile != null) {

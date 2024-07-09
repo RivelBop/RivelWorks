@@ -2,14 +2,21 @@ package com.rivelbop.rivelworks.preset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 
 /**
  * A basic preset for vehicle movement.
  *
  * @author David/Philip Jerzak (RivelBop)
  */
-public class VehicleMovementPreset {
+public class VehicleMovementPreset extends InputAdapter {
+    /**
+     * Stores the direction being actively held.
+     */
+    protected boolean forward, left, back, right;
+
     /**
      * Sprite effected by vehicle movement.
      */
@@ -50,17 +57,18 @@ public class VehicleMovementPreset {
         float delta = Gdx.graphics.getDeltaTime();
 
         // Rotation bases off PI/2 instead of 0
-        float xAngle = (float) Math.cos(Math.toRadians(sprite.getRotation() + 90f));
-        float yAngle = (float) Math.sin(Math.toRadians(sprite.getRotation() + 90f));
+        float rotation = sprite.getRotation() + 90f;
+        float xAngle = MathUtils.cosDeg(rotation);
+        float yAngle = MathUtils.sinDeg(rotation);
 
         // Accelerates vehicle in the forward direction
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (forward) {
             velocity += acceleration * delta;
             isMoving = true;
         }
 
         // Accelerates vehicle in the backward direction
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (back) {
             velocity -= acceleration * delta;
             isMoving = true;
         }
@@ -82,12 +90,12 @@ public class VehicleMovementPreset {
         sprite.setOriginCenter();
 
         // Rotate left
-        if (velocity != 0f && Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (velocity != 0f && left) {
             sprite.rotate(rotationSpeed * delta);
         }
 
         // Rotate right
-        if (velocity != 0f && Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (velocity != 0f && right) {
             sprite.rotate(-rotationSpeed * delta);
         }
     }
@@ -177,5 +185,43 @@ public class VehicleMovementPreset {
      */
     public float getVelocity() {
         return velocity;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                forward = false;
+                break;
+            case Input.Keys.A:
+                left = false;
+                break;
+            case Input.Keys.S:
+                back = false;
+                break;
+            case Input.Keys.D:
+                right = false;
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                forward = true;
+                break;
+            case Input.Keys.A:
+                left = true;
+                break;
+            case Input.Keys.S:
+                back = true;
+                break;
+            case Input.Keys.D:
+                right = true;
+                break;
+        }
+        return true;
     }
 }

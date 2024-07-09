@@ -2,17 +2,24 @@ package com.rivelbop.rivelworks.preset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.rivelbop.rivelworks.physics2d.body.DynamicBody2D;
+import com.rivelbop.rivelworks.g2d.physics.body.DynamicBody2D;
 
 /**
  * A physics preset for vehicle movement.
  *
  * @author David/Philip Jerzak (RivelBop)
  */
-public class VehicleMovementPhysicsPreset {
+public class VehicleMovementPhysicsPreset extends InputAdapter {
+    /**
+     * Stores the direction being actively held.
+     */
+    protected boolean forward, left, back, right;
+
     /**
      * Pixels per meter conversion constant.
      */
@@ -70,17 +77,18 @@ public class VehicleMovementPhysicsPreset {
         Vector2 position = physicsBody.getTransform().getPosition();
 
         // Rotation bases off PI/2 instead of 0
-        float xAngle = (float) Math.cos(physicsBody.getAngle() + Math.toRadians(90f));
-        float yAngle = (float) Math.sin(physicsBody.getAngle() + Math.toRadians(90f));
+        float rotation = physicsBody.getAngle() + 90f * MathUtils.radiansToDegrees;
+        float xAngle = MathUtils.cos(rotation);
+        float yAngle = MathUtils.sin(rotation);
 
         // Accelerates vehicle in the forward direction
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (forward) {
             velocity += acceleration * delta;
             isMoving = true;
         }
 
         // Accelerates vehicle in the backward direction
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (back) {
             velocity -= acceleration * delta;
             isMoving = true;
         }
@@ -100,19 +108,19 @@ public class VehicleMovementPhysicsPreset {
         physicsBody.setLinearVelocity(xAngle * velocity, yAngle * velocity);
 
         // Rotate left
-        if (velocity != 0f && Gdx.input.isKeyPressed(Input.Keys.A)) {
-            physicsBody.setTransform(position.x, position.y, (float) (physicsBody.getAngle() + Math.toRadians(rotationSpeed) * delta));
+        if (velocity != 0f && left) {
+            physicsBody.setTransform(position.x, position.y, physicsBody.getAngle() + rotationSpeed * MathUtils.degreesToRadians * delta);
         }
 
         // Rotate right
-        if (velocity != 0f && Gdx.input.isKeyPressed(Input.Keys.D)) {
-            physicsBody.setTransform(position.x, position.y, (float) (physicsBody.getAngle() - Math.toRadians(rotationSpeed) * delta));
+        if (velocity != 0f && right) {
+            physicsBody.setTransform(position.x, position.y, physicsBody.getAngle() - rotationSpeed * MathUtils.degreesToRadians * delta);
         }
 
         // Update the sprite's position and rotation according to the body's
         sprite.setPosition(position.x * PPM - sprite.getWidth() / 2f, position.y * PPM - sprite.getHeight() / 2f);
         sprite.setOriginCenter();
-        sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
+        sprite.setRotation(physicsBody.getAngle() * MathUtils.radiansToDegrees);
     }
 
     /**
@@ -214,5 +222,43 @@ public class VehicleMovementPhysicsPreset {
      */
     public DynamicBody2D getBody() {
         return BODY;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                forward = false;
+                break;
+            case Input.Keys.A:
+                left = false;
+                break;
+            case Input.Keys.S:
+                back = false;
+                break;
+            case Input.Keys.D:
+                right = false;
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                forward = true;
+                break;
+            case Input.Keys.A:
+                left = true;
+                break;
+            case Input.Keys.S:
+                back = true;
+                break;
+            case Input.Keys.D:
+                right = true;
+                break;
+        }
+        return true;
     }
 }

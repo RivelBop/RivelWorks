@@ -2,6 +2,7 @@ package com.rivelbop.rivelworks.preset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 /**
@@ -9,7 +10,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  *
  * @author Philip Jerzak (RivelBop)
  */
-public class TopDownMovementPreset {
+public class TopDownMovementPreset extends InputAdapter {
+    /**
+     * Stores the direction being actively held.
+     */
+    protected boolean forward, left, back, right;
+
     /**
      * The sprite that the movement will be applied to.
      */
@@ -37,16 +43,16 @@ public class TopDownMovementPreset {
     public void update() {
         float delta = Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (forward) {
             sprite.translateY(speed * delta);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (left) {
             sprite.translateX(-speed * delta);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (back) {
             sprite.translateY(-speed * delta);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (right) {
             sprite.translateX(speed * delta);
         }
     }
@@ -81,5 +87,43 @@ public class TopDownMovementPreset {
      */
     public float getSpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                forward = false;
+                break;
+            case Input.Keys.A:
+                left = false;
+                break;
+            case Input.Keys.S:
+                back = false;
+                break;
+            case Input.Keys.D:
+                right = false;
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                forward = true;
+                break;
+            case Input.Keys.A:
+                left = true;
+                break;
+            case Input.Keys.S:
+                back = true;
+                break;
+            case Input.Keys.D:
+                right = true;
+                break;
+        }
+        return true;
     }
 }

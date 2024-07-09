@@ -1,18 +1,23 @@
 package com.rivelbop.rivelworks.preset;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.rivelbop.rivelworks.physics2d.body.DynamicBody2D;
+import com.rivelbop.rivelworks.g2d.physics.body.DynamicBody2D;
 
 /**
  * A preset for physics basic top down, 8-directional movement.
  *
  * @author Philip Jerzak (RivelBop)
  */
-public class TopDownMovementPhysicsPreset {
+public class TopDownMovementPhysicsPreset extends InputAdapter {
+    /**
+     * Stores the direction being actively held.
+     */
+    protected boolean forward, left, back, right;
+
     /**
      * Pixels per meter conversion constant.
      */
@@ -55,16 +60,16 @@ public class TopDownMovementPhysicsPreset {
         Body body = BODY.getBody();
         body.setLinearVelocity(Vector2.Zero);
 
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+        if (forward) {
             body.setLinearVelocity(body.getLinearVelocity().x, speed);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (left) {
             body.setLinearVelocity(-speed, body.getLinearVelocity().y);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if (back) {
             body.setLinearVelocity(body.getLinearVelocity().x, -speed);
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+        if (right) {
             body.setLinearVelocity(speed, body.getLinearVelocity().y);
         }
 
@@ -115,5 +120,43 @@ public class TopDownMovementPhysicsPreset {
      */
     public float getPPM() {
         return PPM;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                forward = false;
+                break;
+            case Input.Keys.A:
+                left = false;
+                break;
+            case Input.Keys.S:
+                back = false;
+                break;
+            case Input.Keys.D:
+                right = false;
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.W:
+                forward = true;
+                break;
+            case Input.Keys.A:
+                left = true;
+                break;
+            case Input.Keys.S:
+                back = true;
+                break;
+            case Input.Keys.D:
+                right = true;
+                break;
+        }
+        return true;
     }
 }

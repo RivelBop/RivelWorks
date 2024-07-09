@@ -5,10 +5,12 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 public class DesktopLauncher {
     public static void main(String[] arg) {
-		// Relaunch JVM if -XstartOnFirstThread is necessary (also handles Windows optimizations)
-        if (StartupHelper.startNewJvmIfRequired()) return;
+        // Relaunch JVM if -XstartOnFirstThread is necessary (also handles Windows optimizations)
+        if (StartupHelper.startNewJvmIfRequired()) {
+            return;
+        }
 
-		// Handles the LWJGL3 Window
+        // Handles the LWJGL3 Window
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.disableAudio(true); // Audio is disabled to use TuningFork
         config.useVsync(true);
