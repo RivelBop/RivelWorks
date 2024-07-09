@@ -6,9 +6,8 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.ControllerMapping;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntSet;
 import com.esotericsoftware.minlog.Log;
-
-import java.util.HashSet;
 
 /**
  * Used as a simplified wrapper around the GDX Controller library.
@@ -21,7 +20,7 @@ public class GamePad implements ControllerListener {
     /**
      * Keeps track of all buttons that have just been pressed to provide functionality for {@link #isButtonJustPressed(int)}.
      */
-    private final HashSet<Integer> JUST_PRESSED_BUTTONS = new HashSet<>();
+    private final IntSet JUST_PRESSED_BUTTONS = new IntSet();
 
     /**
      * The default GDX controller, used as the backbone for a GamePad.

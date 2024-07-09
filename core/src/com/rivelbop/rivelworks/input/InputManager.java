@@ -1,9 +1,9 @@
 package com.rivelbop.rivelworks.input;
 
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.esotericsoftware.minlog.Log;
-
-import java.util.HashMap;
 
 /**
  * Handles multi-input support, allowing the user to easily customize in-game controls.
@@ -16,12 +16,12 @@ public class InputManager extends InputMultiplexer {
     /**
      * Stores the game pads provided to the input manager along with their provided index (ID).
      */
-    private final HashMap<Integer, GamePad> GAMEPADS = new HashMap<>();
+    private final IntMap<GamePad> GAMEPADS = new IntMap<>();
 
     /**
      * Stores the input map for each game pad and player.
      */
-    private final HashMap<Integer, HashMap<String, InputMap>> INDEXED_INPUT_MAPS = new HashMap<>();
+    private final IntMap<ObjectMap<String, InputMap>> INDEXED_INPUT_MAPS = new IntMap<>();
 
     /**
      * Controls both the input for desktop and controllers.
@@ -36,7 +36,7 @@ public class InputManager extends InputMultiplexer {
      * Creates the default input map for the first player.
      */
     public InputManager() {
-        this(new HashMap<>());
+        this(new ObjectMap<>());
     }
 
     /**
@@ -44,7 +44,7 @@ public class InputManager extends InputMultiplexer {
      *
      * @param inputMap The initial/base input map.
      */
-    public InputManager(HashMap<String, InputMap> inputMap) {
+    public InputManager(ObjectMap<String, InputMap> inputMap) {
         setGamePad(new GamePad(), inputMap);
     }
 
@@ -66,7 +66,7 @@ public class InputManager extends InputMultiplexer {
      * @return Whether the input is pressed.
      */
     public boolean isPressed(int index, String inputName) {
-        HashMap<String, InputMap> indexedInputMap = INDEXED_INPUT_MAPS.get(index);
+        ObjectMap<String, InputMap> indexedInputMap = INDEXED_INPUT_MAPS.get(index);
         InputMap inputMap = (indexedInputMap != null) ? indexedInputMap.get(inputName) : null;
         if (inputMap != null) {
             GamePad gamePad = GAMEPADS.get(index);
@@ -90,7 +90,7 @@ public class InputManager extends InputMultiplexer {
      * @param gamePad  The game pad to set.
      * @param inputMap The input map to set.
      */
-    public void setGamePad(GamePad gamePad, HashMap<String, InputMap> inputMap) {
+    public void setGamePad(GamePad gamePad, ObjectMap<String, InputMap> inputMap) {
         setGamePad(0, gamePad, inputMap);
     }
 
@@ -111,7 +111,7 @@ public class InputManager extends InputMultiplexer {
      * @param gamePad  The game pad to set.
      * @param inputMap The input map to set.
      */
-    public void setGamePad(int index, GamePad gamePad, HashMap<String, InputMap> inputMap) {
+    public void setGamePad(int index, GamePad gamePad, ObjectMap<String, InputMap> inputMap) {
         GAMEPADS.put(index, gamePad);
         setInputMap(index, inputMap);
         Log.info(LOG_TAG, "New game pad set at index: " + index);
@@ -122,7 +122,7 @@ public class InputManager extends InputMultiplexer {
      *
      * @param inputMap The input map to set.
      */
-    public void setInputMap(HashMap<String, InputMap> inputMap) {
+    public void setInputMap(ObjectMap<String, InputMap> inputMap) {
         setInputMap(0, inputMap);
     }
 
@@ -132,7 +132,7 @@ public class InputManager extends InputMultiplexer {
      * @param index    The index to set the input map.
      * @param inputMap The input map to set.
      */
-    public void setInputMap(int index, HashMap<String, InputMap> inputMap) {
+    public void setInputMap(int index, ObjectMap<String, InputMap> inputMap) {
         if (GAMEPADS.get(index) != null) {
             INDEXED_INPUT_MAPS.put(index, inputMap);
             Log.debug(LOG_TAG, "New input map set at index: " + index);
@@ -157,7 +157,7 @@ public class InputManager extends InputMultiplexer {
      * @param inputMap The input map itself.
      */
     public void setInput(int index, String name, InputMap inputMap) {
-        HashMap<String, InputMap> mapper = INDEXED_INPUT_MAPS.get(index);
+        ObjectMap<String, InputMap> mapper = INDEXED_INPUT_MAPS.get(index);
         if (mapper != null) {
             mapper.put(name, inputMap);
             Log.debug(LOG_TAG, "New input set at index: " + index);
@@ -182,7 +182,7 @@ public class InputManager extends InputMultiplexer {
     /**
      * @return The first players overall input map.
      */
-    public HashMap<String, InputMap> getInputMap() {
+    public ObjectMap<String, InputMap> getInputMap() {
         return getInputMap(0);
     }
 
@@ -190,7 +190,7 @@ public class InputManager extends InputMultiplexer {
      * @param index The index of the specific player's overall input map.
      * @return The overall input map of the specified player.
      */
-    public HashMap<String, InputMap> getInputMap(int index) {
+    public ObjectMap<String, InputMap> getInputMap(int index) {
         return INDEXED_INPUT_MAPS.get(index);
     }
 
@@ -218,8 +218,18 @@ public class InputManager extends InputMultiplexer {
      * Removes all disconnected controllers from the list of provided game pads.
      */
     public void removeAllDisconnectedGamePads() {
-        GAMEPADS.entrySet().removeIf(f -> f.getValue() == null || !f.getValue().isConnected());
-        INDEXED_INPUT_MAPS.entrySet().removeIf(f -> !GAMEPADS.containsKey(f.getKey()));
+        GAMEPADS.forEach(e -> {
+            GamePad gamePad = e.value;
+            if (gamePad == null || !gamePad.isConnected()) {
+                removeGamePad(e.key);
+            }
+        });
+        INDEXED_INPUT_MAPS.forEach(e -> {
+            int key = e.key;
+            if (!GAMEPADS.containsKey(key)) {
+                INDEXED_INPUT_MAPS.remove(key);
+            }
+        });
         Log.debug(LOG_TAG, "All disconnected controllers have been removed.");
     }
 }

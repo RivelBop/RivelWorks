@@ -4,8 +4,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.physics.bullet.collision.*;
 import com.badlogic.gdx.utils.Disposable;
-
-import java.util.HashSet;
+import com.badlogic.gdx.utils.ObjectSet;
 
 /**
  * Stores and handles collision bodies.
@@ -16,7 +15,7 @@ public class CollisionWorld3D implements Disposable {
     /**
      * Stores any provided collision bodies.
      */
-    private final HashSet<CollisionBody3D> BODIES;
+    private final ObjectSet<CollisionBody3D> BODIES;
 
     /**
      * Default collision configuration used to initialize the dispatcher.
@@ -35,7 +34,7 @@ public class CollisionWorld3D implements Disposable {
      * Initializes a collision world with default properties.
      */
     public CollisionWorld3D() {
-        this.BODIES = new HashSet<>();
+        this.BODIES = new ObjectSet<>();
         this.CONFIG = new btDefaultCollisionConfiguration();
         this.DISPATCHER = new btCollisionDispatcher(CONFIG);
         this.BROADPHASE = new btDbvtBroadphase();
@@ -115,7 +114,7 @@ public class CollisionWorld3D implements Disposable {
     /**
      * @return All {@link CollisionBody3D} objects in the world.
      */
-    public HashSet<CollisionBody3D> getBodies() {
+    public ObjectSet<CollisionBody3D> getBodies() {
         return BODIES;
     }
 

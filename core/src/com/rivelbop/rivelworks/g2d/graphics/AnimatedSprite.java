@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.ObjectMap;
 import com.esotericsoftware.minlog.Log;
-
-import java.util.HashMap;
 
 /**
  * An extension of the LibGDX {@link Sprite} class with a built-in animation system.
@@ -43,7 +42,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
      * Stores a set of previously used {@link AtlasAnimation}, each referenced by calling their 'name' as a {@link String}.
      * This is specifically used to avoid having to create a new reference to a file or from an {@link AssetManager}.
      */
-    private final HashMap<String, AtlasAnimation> ANIMATIONS;
+    private final ObjectMap<String, AtlasAnimation> ANIMATIONS;
 
     /**
      * A reference to the current animation that is playing.
@@ -64,7 +63,7 @@ public class AnimatedSprite extends Sprite implements Disposable {
 
         // Initialize animation variables
         this.ATLAS = atlas;
-        this.ANIMATIONS = new HashMap<>();
+        this.ANIMATIONS = new ObjectMap<>();
         this.ANIMATIONS.put(baseAnimation, new AtlasAnimation(atlas, baseAnimation, frameDelay, playMode));
         this.currentAnimation = ANIMATIONS.get(baseAnimation);
         this.FRAME_DELAY = frameDelay;

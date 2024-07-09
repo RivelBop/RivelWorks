@@ -10,9 +10,8 @@ import com.badlogic.gdx.physics.bullet.dynamics.btDynamicsWorld;
 import com.badlogic.gdx.physics.bullet.dynamics.btRigidBody;
 import com.badlogic.gdx.physics.bullet.dynamics.btSequentialImpulseConstraintSolver;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.ObjectSet;
 import com.rivelbop.rivelworks.g3d.physics.collision.CollisionBody3D;
-
-import java.util.HashSet;
 
 /**
  * Stores and handles physics bodies.
@@ -23,12 +22,12 @@ public class PhysicsWorld3D implements Disposable {
     /**
      * Set of added physics bodies.
      */
-    private final HashSet<PhysicsBody3D> PHYSICS_BODIES;
+    private final ObjectSet<PhysicsBody3D> PHYSICS_BODIES;
 
     /**
      * Set of added collision bodies.
      */
-    private final HashSet<CollisionBody3D> COLLISION_BODIES;
+    private final ObjectSet<CollisionBody3D> COLLISION_BODIES;
 
     /**
      * Collision configuration set as default.
@@ -50,8 +49,8 @@ public class PhysicsWorld3D implements Disposable {
      * @param gravity The gravity to apply to the world.
      */
     public PhysicsWorld3D(Vector3 gravity) {
-        this.PHYSICS_BODIES = new HashSet<>();
-        this.COLLISION_BODIES = new HashSet<>();
+        this.PHYSICS_BODIES = new ObjectSet<>();
+        this.COLLISION_BODIES = new ObjectSet<>();
 
         this.CONFIG = new btDefaultCollisionConfiguration();
         this.DISPATCHER = new btCollisionDispatcher(CONFIG);
@@ -161,14 +160,14 @@ public class PhysicsWorld3D implements Disposable {
     /**
      * @return Set of all physics bodies within the world.
      */
-    public HashSet<PhysicsBody3D> getPhysicsBodies() {
+    public ObjectSet<PhysicsBody3D> getPhysicsBodies() {
         return PHYSICS_BODIES;
     }
 
     /**
      * @return Set of all collision bodies within the world.
      */
-    public HashSet<CollisionBody3D> getCollisionBodies() {
+    public ObjectSet<CollisionBody3D> getCollisionBodies() {
         return COLLISION_BODIES;
     }
 

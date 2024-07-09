@@ -1,5 +1,6 @@
 package com.rivelbop.rivelworks.networking;
 
+import com.badlogic.gdx.utils.ObjectSet;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.EndPoint;
@@ -9,8 +10,6 @@ import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Arrays;
-import java.util.HashSet;
 
 /**
  * Handles class registration for clients and servers.
@@ -24,7 +23,7 @@ public class Network {
     /**
      * A set of packet classes registered under the network.
      */
-    private final HashSet<Class> REGISTERED_CLASSES = new HashSet<>();
+    private final ObjectSet<Class> REGISTERED_CLASSES = new ObjectSet<>();
 
     /**
      * The network's IP Address ('localhost' by default).
@@ -42,7 +41,7 @@ public class Network {
      * @param classes The packet classes to register.
      */
     public void addClass(Class... classes) {
-        REGISTERED_CLASSES.addAll(Arrays.asList(classes));
+        REGISTERED_CLASSES.addAll(classes);
     }
 
     /**
