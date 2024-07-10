@@ -24,16 +24,16 @@ public class StaticBody3D extends PhysicsBody3D {
 
     @Override
     public void setVelocity(float x, float z) {
-        Log.error(LOG_TAG, "Velocity cannot be set for static body.");
+        Log.error(LOG_TAG, "Velocity cannot be set for static body!");
     }
 
     @Override
     public void setVelocity(Vector3 velocity) {
-        Log.error(LOG_TAG, "Velocity cannot be set for static body.");
+        Log.error(LOG_TAG, "Velocity cannot be set for static body!");
     }
 
     @Override
     public void setVelocity(float x, float y, float z) {
-        Log.error(LOG_TAG, "Velocity cannot be set for static body.");
+        Log.error(LOG_TAG, "Velocity cannot be set for static body!");
     }
 }

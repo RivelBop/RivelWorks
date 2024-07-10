@@ -63,7 +63,7 @@ public class GamePad implements ControllerListener {
         if (isConnected()) {
             controller.addListener(this);
         } else {
-            Log.error(LOG_TAG, "No controller detected.");
+            Log.error(LOG_TAG, "No controller detected!");
         }
     }
 

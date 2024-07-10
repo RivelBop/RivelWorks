@@ -1,10 +1,7 @@
 package com.rivelbop.rivelworks.util;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Mesh;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -16,6 +13,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
+import com.esotericsoftware.minlog.Log;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -24,9 +22,13 @@ import org.lwjgl.glfw.GLFW;
  * @author David Jerzak (RivelBop)
  */
 public final class Utils {
+    private static final String LOG_TAG = Utils.class.getSimpleName();
+
     private static final Vector2 CURSOR = new Vector2();
     private static final double[] X_POS = new double[1], Y_POS = new double[1];
     public static long window;
+
+    public static final int RGBA_8888_CLEAR = -256;
 
     private Utils() {
     }
@@ -96,6 +98,59 @@ public final class Utils {
         GLFW.glfwGetCursorPos(window, X_POS, Y_POS);
         CURSOR.set((float) X_POS[0], (float) Y_POS[0]);
         return CURSOR;
+    }
+
+    /**
+     * Combines two pix maps (with equal dimensions) into one.
+     *
+     * @param pixmap1 Pixmap inputted and outputted.
+     * @param pixmap2 Pixmap to add to the first.
+     */
+    public static void combinePixmap(Pixmap pixmap1, Pixmap pixmap2) {
+        int width = pixmap1.getWidth();
+        int height = pixmap1.getHeight();
+
+        if (width != pixmap2.getWidth() || height != pixmap2.getHeight()) {
+            Log.error(LOG_TAG, "Pixmaps cannot be combined due to differing sizes!");
+            return;
+        }
+
+        Color color1 = new Color();
+        Color color2 = new Color();
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                int pixel1 = pixmap1.getPixel(x, y);
+                int pixel2 = pixmap2.getPixel(x, y);
+                color1.set(pixel1);
+                color2.set(pixel2);
+
+                boolean pixel2IsClear = pixel2 == RGBA_8888_CLEAR;
+                if (pixel1 == RGBA_8888_CLEAR && !pixel2IsClear) {
+                    pixmap1.drawPixel(x, y, pixmap2.getPixel(x, y));
+                } else if (color1.a < 1f || (!pixel2IsClear && color2.a < 1f)) {
+                    pixmap1.drawPixel(x, y, Color.rgba8888(color1.mul(color2)));
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets the color of a pix map.
+     *
+     * @param pixmap The pixmap to colorize.
+     * @param color  The color to blend.
+     */
+    public static void setPixmapColor(Pixmap pixmap, Color color) {
+        int width = pixmap.getWidth();
+        int height = pixmap.getHeight();
+
+        Color pixmapColor = new Color();
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                pixmap.drawPixel(x, y, Color.rgba8888(pixmapColor.set(pixmap.getPixel(x, y)).mul(color)));
+            }
+        }
     }
 
     /**
