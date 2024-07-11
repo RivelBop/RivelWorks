@@ -80,6 +80,11 @@ public class StartupHelper {
             return false;
         }
 
+        // Skip restarting if debugging
+        if (isDebugging()) {
+            return false;
+        }
+
         // There is no need for -XstartOnFirstThread on Graal native image
         if (!System.getProperty("org.graalvm.nativeimage.imagecode", "").isEmpty()) {
             return false;
@@ -176,5 +181,17 @@ public class StartupHelper {
      */
     public static boolean startNewJvmIfRequired() {
         return startNewJvmIfRequired(true);
+    }
+
+    /**
+     * @return Whether the project is run in debug mode in an IDE.
+     */
+    public static boolean isDebugging() {
+        for (String arg : ManagementFactory.getRuntimeMXBean().getInputArguments()) {
+            if (arg.contains("-agentlib:jdwp")) {
+                return true;
+            }
+        }
+        return false;
     }
 }
