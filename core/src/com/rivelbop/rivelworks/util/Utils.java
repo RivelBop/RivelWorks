@@ -59,7 +59,7 @@ public final class Utils {
      * Clears the screen for 2D games (only clears the color buffer).
      */
     public static void clearScreen2D() {
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
     /**
@@ -88,7 +88,8 @@ public final class Utils {
      * Clears the screen for 3D games (clears both the color and depth buffers).
      */
     public static void clearScreen3D() {
-        Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
     }
 
     /**
