@@ -71,7 +71,11 @@ public class Cone extends Shape3D {
      * @param divisions     The amount of divisions the cone will have.
      */
     public Cone(ModelInstance modelInstance, float radius, float height, int divisions) {
-        this(modelInstance.model, radius, height, divisions);
+        super(modelInstance);
+
+        this.RADIUS = radius;
+        this.HEIGHT = height;
+        this.DIVISIONS = divisions;
     }
 
     /**

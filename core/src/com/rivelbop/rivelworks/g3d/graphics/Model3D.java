@@ -43,10 +43,19 @@ public class Model3D extends ModelInstance implements Disposable {
     /**
      * Loads a 3D model from the provided {@link com.badlogic.gdx.graphics.g3d.Model}.
      *
-     * @param model 3D Model used to created {@link ModelInstance}.
+     * @param model 3D Model used to create {@link ModelInstance}.
      */
     public Model3D(Model model) {
         super(model);
+    }
+
+    /**
+     * Loads a 3D model from the provided {@link ModelInstance}.
+     *
+     * @param modelInstance 3D Model Instance used to create {@link ModelInstance}.
+     */
+    public Model3D(ModelInstance modelInstance) {
+        super(modelInstance);
     }
 
     /**

@@ -25,6 +25,6 @@ public class Shape3D extends Model3D {
      * @param modelInstance The model instance to gather model data from.
      */
     public Shape3D(ModelInstance modelInstance) {
-        super(modelInstance.model);
+        super(modelInstance);
     }
 }

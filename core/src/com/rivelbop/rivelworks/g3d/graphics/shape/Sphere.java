@@ -66,7 +66,10 @@ public class Sphere extends Shape3D {
      * @param divisions     The amount of divisions the sphere will have.
      */
     public Sphere(ModelInstance modelInstance, float radius, int divisions) {
-        this(modelInstance.model, radius, divisions);
+        super(modelInstance);
+
+        this.RADIUS = radius;
+        this.DIVISIONS = divisions;
     }
 
     /**

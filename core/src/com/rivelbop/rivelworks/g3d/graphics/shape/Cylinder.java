@@ -76,7 +76,12 @@ public class Cylinder extends Shape3D {
      * @param divisions     The amount of divisions that the cylinder will have.
      */
     public Cylinder(ModelInstance modelInstance, float width, float height, float depth, int divisions) {
-        this(modelInstance.model, width, height, depth, divisions);
+        super(modelInstance);
+
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        this.DEPTH = depth;
+        this.DIVISIONS = divisions;
     }
 
     /**

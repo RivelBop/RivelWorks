@@ -66,7 +66,11 @@ public class Cube extends Shape3D {
      * @param depth         The depth/girth of the cube.
      */
     public Cube(ModelInstance modelInstance, float width, float height, float depth) {
-        this(modelInstance.model, width, height, depth);
+        super(modelInstance);
+
+        this.WIDTH = width;
+        this.HEIGHT = height;
+        this.DEPTH = depth;
     }
 
     /**

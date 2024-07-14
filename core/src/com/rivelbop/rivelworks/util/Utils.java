@@ -2,6 +2,7 @@ package com.rivelbop.rivelworks.util;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g3d.model.MeshPart;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -14,6 +15,7 @@ import com.esotericsoftware.kryo.Serializer;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.minlog.Log;
+import com.rivelbop.rivelworks.g3d.physics.dynamic.StaticBody3D;
 import org.lwjgl.glfw.GLFW;
 
 /**
@@ -366,6 +368,82 @@ public final class Utils {
             }
         }
         return newIndices.toArray();
+    }
+
+    /**
+     * Removes the specific indices subset from the body's mesh.
+     *
+     * @param body            The body to remove from.
+     * @param indicesToRemove The subset of indices to remove.
+     */
+    public static void removeSubsetIndices(StaticBody3D body, short[] indicesToRemove) {
+        MeshPart meshPart = body.getShape().nodes.first().parts.first().meshPart;
+        removeSubsetIndices(meshPart.mesh, indicesToRemove);
+
+        meshPart.offset = 0;
+        meshPart.size = meshPart.mesh.getNumIndices();
+    }
+
+    /**
+     * Removes a subset of indices from a mesh.
+     *
+     * @param mesh            The mesh to remove from.
+     * @param indicesToRemove The subset of indices to remove.
+     */
+    public static void removeSubsetIndices(Mesh mesh, short[] indicesToRemove) {
+        // Retrieve existing indices
+        short[] oldIndices = new short[mesh.getNumIndices()];
+        mesh.getIndices(oldIndices);
+
+        // Update the mesh with the new index buffer
+        mesh.setIndices(removeSubsetIndices(oldIndices, indicesToRemove));
+    }
+
+    /**
+     * Removes the specific indices (same values, same order) from the indices array.
+     *
+     * @param indices         The indices to 'remove' from.
+     * @param indicesToRemove The subset of indices to remove.
+     * @return The new indices array.
+     */
+    public static short[] removeSubsetIndices(short[] indices, short[] indicesToRemove) {
+        ShortArray newIndices = new ShortArray(indices);
+        int index = findSubsetIndex(indices, indicesToRemove);
+
+        if (index != -1 && indicesToRemove.length < indices.length) {
+            newIndices.removeRange(index, index + indicesToRemove.length - 1);
+        }
+        return newIndices.toArray();
+    }
+
+    /**
+     * Finds the index of the subset short array within the main array.
+     *
+     * @param mainArray   The array to search in.
+     * @param subsetArray The subset to search for.
+     * @return The index of the subset (-1 if not found).
+     */
+    public static int findSubsetIndex(short[] mainArray, short[] subsetArray) {
+        if (subsetArray.length == 0) {
+            return 0; // Empty subset array is trivially found at the start
+        }
+        if (mainArray.length == 0 || mainArray.length < subsetArray.length) {
+            return -1; // Main array is too short to contain the subset
+        }
+
+        for (int i = 0; i <= mainArray.length - subsetArray.length; i++) {
+            boolean found = true;
+            for (int j = 0; j < subsetArray.length; j++) {
+                if (mainArray[i + j] != subsetArray[j]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return i; // Return the starting index where the subset is found
+            }
+        }
+        return -1; // No matching subsequence found
     }
 
     /**
