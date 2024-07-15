@@ -75,7 +75,16 @@ public class PhysicsWorld3D implements Disposable {
      * Simulates the physics world.
      */
     public void step() {
-        float delta = Math.min(1f / 30f, Gdx.graphics.getDeltaTime());
+        step(Gdx.graphics.getDeltaTime());
+    }
+
+    /**
+     * Simulates the physics world according to the provided delta time.
+     *
+     * @param deltaTime The delta time.
+     */
+    public void step(float deltaTime) {
+        float delta = Math.min(1f / 30f, deltaTime);
         WORLD.stepSimulation(delta, 5, 1f / 60f);
 
         for (CollisionBody3D b : COLLISION_BODIES) {
