@@ -163,11 +163,14 @@ public class CollisionWorld3D implements Disposable {
     /**
      * Disposes of all bodies and the world, optionally the models that go along with the shapeInstances as well.
      *
+     * @param bodies         Whether to dispose bodies.
      * @param shapeInstances Whether to dispose of the models stored within the shape instances.
      */
-    public void dispose(boolean shapeInstances) {
-        for (CollisionBody3D b : BODIES) {
-            b.dispose(shapeInstances);
+    public void dispose(boolean bodies, boolean shapeInstances) {
+        if (bodies) {
+            for (CollisionBody3D b : BODIES) {
+                b.dispose(shapeInstances);
+            }
         }
         WORLD.dispose();
         BROADPHASE.dispose();

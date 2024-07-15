@@ -236,14 +236,17 @@ public class PhysicsWorld3D implements Disposable {
     /**
      * Disposes of all bodies and the world, optionally the shape instances.
      *
+     * @param bodies        Whether the bodies should be disposed.
      * @param shapeInstance Whether the shape instances should be disposed.
      */
-    public void dispose(boolean shapeInstance) {
-        for (PhysicsBody3D b : PHYSICS_BODIES) {
-            b.dispose(shapeInstance);
-        }
-        for (CollisionBody3D b : COLLISION_BODIES) {
-            b.dispose(shapeInstance);
+    public void dispose(boolean bodies, boolean shapeInstance) {
+        if (bodies) {
+            for (PhysicsBody3D b : PHYSICS_BODIES) {
+                b.dispose(shapeInstance);
+            }
+            for (CollisionBody3D b : COLLISION_BODIES) {
+                b.dispose(shapeInstance);
+            }
         }
         WORLD.dispose();
         CONFIG.dispose();
