@@ -1,6 +1,7 @@
 package com.rivelbop.rivelworks.io;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetLoaderParameters;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -51,10 +52,26 @@ public class Assets implements Disposable {
      * @param <T>      TYPE
      */
     public <T> void load(String fileName, Class<T> type) {
+        load(fileName, type, null);
+    }
+
+    /**
+     * Loads the provided file and type into the {@link #ASSET_MANAGER}.
+     *
+     * @param fileName  The name of the file to load.
+     * @param type      The file type to load.
+     * @param parameter The loading parameter.
+     * @param <T>       TYPE
+     */
+    public <T> void load(String fileName, Class<T> type, AssetLoaderParameters<T> parameter) {
         // Check and load the asset file
         File file = Gdx.files.internal(fileName).file();
         if (!file.exists()) {
-            ASSET_MANAGER.load(fileName, type);
+            if (parameter != null) {
+                ASSET_MANAGER.load(fileName, type, parameter);
+            } else {
+                ASSET_MANAGER.load(fileName, type);
+            }
             Log.info(LOG_TAG, "LOADED: " + fileName);
             return;
         }
@@ -67,7 +84,7 @@ public class Assets implements Disposable {
         // Move the external asset to the newly created asset directory
         if (file.renameTo(new File(externalAssetsFolder.getPath() + File.separator + fileName))) {
             Log.debug(LOG_TAG, "FILE MOVED: " + fileName);
-            load(fileName, type);
+            load(fileName, type, parameter);
             return;
         }
         Log.error(LOG_TAG, "ERROR MOVING FILE: " + fileName);
