@@ -23,6 +23,12 @@ public class StaticBody3D extends PhysicsBody3D {
     }
 
     @Override
+    public void setState(int activationState) {
+        Log.warn(LOG_TAG, "It is not recommended to set the activation state of a static body!");
+        super.setState(activationState);
+    }
+
+    @Override
     public void setVelocity(float x, float z) {
         Log.error(LOG_TAG, "Velocity cannot be set for static body!");
     }

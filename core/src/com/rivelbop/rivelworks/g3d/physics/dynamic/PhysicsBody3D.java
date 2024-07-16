@@ -268,6 +268,15 @@ public class PhysicsBody3D implements Disposable {
     }
 
     /**
+     * Sets the body's activation state.
+     *
+     * @param activationState The activation state of the body, using tags from {@link Collision}.
+     */
+    public void setState(int activationState) {
+        getBody().setActivationState(activationState);
+    }
+
+    /**
      * @param flag Used as a contact 'id' for other bodies to filter out.
      */
     public void setContactFlag(int flag) {

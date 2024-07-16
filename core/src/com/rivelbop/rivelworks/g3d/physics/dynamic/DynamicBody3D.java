@@ -21,16 +21,9 @@ public class DynamicBody3D extends PhysicsBody3D {
         super(shape, mass, new MotionState(), btCollisionObject.CollisionFlags.CF_CUSTOM_MATERIAL_CALLBACK);
     }
 
-    /**
-     * @param activationState The activation state of the body, using tags from {@link com.badlogic.gdx.physics.bullet.collision.Collision}.
-     */
-    public void setState(int activationState) {
-        getBody().setActivationState(activationState);
-    }
-
     @Override
     public void transform(Physics3D.TransformConfig config) {
-        setState(Collision.ACTIVE_TAG);
+        super.setState(Collision.ACTIVE_TAG);
         super.transform(config);
     }
 }
