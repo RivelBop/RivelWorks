@@ -367,15 +367,7 @@ public class PhysicsBody3D implements Disposable {
      */
     @Override
     public void dispose() {
-        SHAPE.dispose();
-        BODY.dispose();
-        INFO.dispose();
-        CONFIG.dispose();
-        DISPATCHER.dispose();
-        COLLISION_SHAPE.dispose();
-        if (STATE != null) {
-            STATE.dispose();
-        }
+        dispose(true);
     }
 
     /**
@@ -384,15 +376,15 @@ public class PhysicsBody3D implements Disposable {
      * @param shapeInstance Whether the shape instance should be disposed.
      */
     public void dispose(boolean shapeInstance) {
-        BODY.dispose();
         INFO.dispose();
-        CONFIG.dispose();
-        DISPATCHER.dispose();
         COLLISION_SHAPE.dispose();
-
+        BODY.dispose();
         if (STATE != null) {
             STATE.dispose();
         }
+        CONFIG.dispose();
+        DISPATCHER.dispose();
+
         if (shapeInstance) {
             SHAPE.dispose();
         }

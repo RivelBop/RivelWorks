@@ -220,17 +220,7 @@ public class PhysicsWorld3D implements Disposable {
      */
     @Override
     public void dispose() {
-        for (PhysicsBody3D b : PHYSICS_BODIES) {
-            b.dispose();
-        }
-        for (CollisionBody3D b : COLLISION_BODIES) {
-            b.dispose();
-        }
-        WORLD.dispose();
-        CONFIG.dispose();
-        DISPATCHER.dispose();
-        BROADPHASE.dispose();
-        SOLVER.dispose();
+        dispose(true, true);
     }
 
     /**
@@ -248,10 +238,11 @@ public class PhysicsWorld3D implements Disposable {
                 b.dispose(shapeInstance);
             }
         }
+
         WORLD.dispose();
-        CONFIG.dispose();
-        DISPATCHER.dispose();
-        BROADPHASE.dispose();
         SOLVER.dispose();
+        BROADPHASE.dispose();
+        DISPATCHER.dispose();
+        CONFIG.dispose();
     }
 }

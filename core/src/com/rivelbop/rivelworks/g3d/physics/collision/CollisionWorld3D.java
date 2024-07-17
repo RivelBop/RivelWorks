@@ -151,13 +151,7 @@ public class CollisionWorld3D implements Disposable {
      */
     @Override
     public void dispose() {
-        for (CollisionBody3D b : BODIES) {
-            b.dispose();
-        }
-        WORLD.dispose();
-        BROADPHASE.dispose();
-        CONFIG.dispose();
-        DISPATCHER.dispose();
+        dispose(true, true);
     }
 
     /**
@@ -172,9 +166,10 @@ public class CollisionWorld3D implements Disposable {
                 b.dispose(shapeInstances);
             }
         }
+
         WORLD.dispose();
         BROADPHASE.dispose();
-        CONFIG.dispose();
         DISPATCHER.dispose();
+        CONFIG.dispose();
     }
 }
