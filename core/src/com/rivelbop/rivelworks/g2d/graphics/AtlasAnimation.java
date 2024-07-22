@@ -3,6 +3,7 @@ package com.rivelbop.rivelworks.g2d.graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Creates and stores an {@link Animation} based on a {@link TextureAtlas}.
@@ -29,7 +30,18 @@ public class AtlasAnimation {
      * @param playMode   The 'loop type' of the animation.
      */
     public AtlasAnimation(TextureAtlas atlas, String name, float frameDelay, Animation.PlayMode playMode) {
-        this.ANIMATION = new Animation<>(frameDelay, atlas.findRegions(name), playMode);
+        this(atlas.findRegions(name), frameDelay, playMode);
+    }
+
+    /**
+     * Creates an {@link AtlasAnimation} object by providing each aspect of an animation.
+     *
+     * @param frames     The frames of animation to loop through.
+     * @param frameDelay The amount of time each frame will be displayed.
+     * @param playMode   The 'loop type' of the animation.
+     */
+    public AtlasAnimation(Array<TextureAtlas.AtlasRegion> frames, float frameDelay, Animation.PlayMode playMode) {
+        this.ANIMATION = new Animation<>(frameDelay, frames, playMode);
     }
 
     /**
