@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
  *
  * @author David/Philip Jerzak (RivelBop)
  */
-public abstract class PhysicsBody2D {
+public class PhysicsBody2D {
     /**
      * The body of the physics object from the physics world.
      */
@@ -23,14 +23,26 @@ public abstract class PhysicsBody2D {
 
     /**
      * Common constructor amongst physics bodies, used to create the {@link #body} of the physics object.
+     * SHOULD NOT BE CONSTRUCTED DIRECTLY
      *
-     * @param world    The Box2D Physics World that the body will be created off of.
+     * @param world    The Box2D Physics World that the body will be created and added to.
      * @param bodyType Determines how the physics will interact with the {@link #body}.
      */
-    public PhysicsBody2D(World world, BodyDef.BodyType bodyType) {
+    protected PhysicsBody2D(World world, BodyDef.BodyType bodyType) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
         this.body = world.createBody(bodyDef);
+    }
+
+    /**
+     * Creates and adds a physics body to a world using a physics body definition.
+     *
+     * @param world   The Box2D Physics World that the body will be created and added to.
+     * @param bodyDef The body definition used to construct the body.
+     */
+    public PhysicsBody2D(World world, PhysicsBodyDef2D bodyDef) {
+        this.body = world.createBody(bodyDef.bodyDef);
+        this.fixture = body.createFixture(bodyDef.fixtureDef);
     }
 
     /**

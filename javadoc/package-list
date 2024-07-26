@@ -15,5 +15,6 @@ com.rivelbop.rivelworks.math
 com.rivelbop.rivelworks.networking
 com.rivelbop.rivelworks.preset
 com.rivelbop.rivelworks.screen
+com.rivelbop.rivelworks.screen.transition
 com.rivelbop.rivelworks.ui
 com.rivelbop.rivelworks.util

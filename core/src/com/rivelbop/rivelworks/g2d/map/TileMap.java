@@ -24,7 +24,7 @@ import com.rivelbop.rivelworks.g2d.physics.body.StaticBody2D;
  *
  * @author David/Philip Jerzak (RivelBop)
  */
-public abstract class TileMap implements Disposable {
+public class TileMap implements Disposable {
     private static final String LOG_TAG = TileMap.class.getSimpleName();
 
     /**
@@ -42,7 +42,7 @@ public abstract class TileMap implements Disposable {
      *
      * @param fileName The name of the 'tmx' file to load.
      */
-    public TileMap(String fileName) {
+    protected TileMap(String fileName) {
         this.map = new TmxMapLoader().load(fileName);
         Log.info(LOG_TAG, "LOADED: " + fileName);
     }
