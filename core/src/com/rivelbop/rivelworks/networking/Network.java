@@ -26,6 +26,11 @@ public class Network {
     private final ObjectSet<Class> REGISTERED_CLASSES = new ObjectSet<>();
 
     /**
+     * Stores the size of the buffer to send and receive.
+     */
+    private int BUFFER_SIZE;
+
+    /**
      * The network's IP Address ('localhost' by default).
      */
     private String IP = "localhost";
@@ -34,6 +39,22 @@ public class Network {
      * The network's port number (54555 by default).
      */
     private int port = 54555;
+
+    /**
+     * Creates a network with the buffer size of 4377.
+     */
+    public Network() {
+        this.BUFFER_SIZE = 4377;
+    }
+
+    /**
+     * Creates a network with the specified buffer size.
+     *
+     * @param bufferSize The size of the buffer.
+     */
+    public Network(int bufferSize) {
+        this.BUFFER_SIZE = bufferSize;
+    }
 
     /**
      * Adds the provided classes as registered packet data for the network.
@@ -74,7 +95,7 @@ public class Network {
      * @return Client with all Network data (IP, Port, Classes).
      */
     public Client newClient(Listener listener) {
-        Client client = new Client();
+        Client client = new Client(BUFFER_SIZE, BUFFER_SIZE);
         register(client);
         client.addListener(listener);
         return client;
@@ -88,11 +109,27 @@ public class Network {
      * @throws IOException Server is unable to bind to the Network's IP and Port.
      */
     public Server newServer(Listener listener) throws IOException {
-        Server server = new Server();
+        Server server = new Server(BUFFER_SIZE, BUFFER_SIZE);
         register(server);
         server.addListener(listener);
-        server.bind(new InetSocketAddress(IP, port), new InetSocketAddress(IP, port));
+
+        InetSocketAddress inetSocketAddress = new InetSocketAddress(IP, port);
+        server.bind(inetSocketAddress, inetSocketAddress);
         return server;
+    }
+
+    /**
+     * Sets the buffer size of the network.
+     *
+     * @param bufferSize The size of the buffer to set to, must be 0 or more!
+     */
+    public void setBufferSize(int bufferSize) {
+        if (bufferSize > -1) {
+            this.BUFFER_SIZE = bufferSize;
+            return;
+        }
+
+        Log.error(LOG_TAG, "Buffer size must be 0 or positive!");
     }
 
     /**
