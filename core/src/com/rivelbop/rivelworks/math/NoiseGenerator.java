@@ -390,14 +390,14 @@ public class NoiseGenerator {
     /// </example>
     public void DomainWarp(Vector2 coord) {
         switch (mFractalType) {
-            default:
-                DomainWarpSingle(coord);
-                break;
             case DomainWarpProgressive:
                 DomainWarpFractalProgressive(coord);
                 break;
             case DomainWarpIndependent:
                 DomainWarpFractalIndependent(coord);
+                break;
+            default:
+                DomainWarpSingle(coord);
                 break;
         }
     }
@@ -412,14 +412,14 @@ public class NoiseGenerator {
     /// </example>
     public void DomainWarp(Vector3 coord) {
         switch (mFractalType) {
-            default:
-                DomainWarpSingle(coord);
-                break;
             case DomainWarpProgressive:
                 DomainWarpFractalProgressive(coord);
                 break;
             case DomainWarpIndependent:
                 DomainWarpFractalIndependent(coord);
+                break;
+            default:
+                DomainWarpSingle(coord);
                 break;
         }
     }
