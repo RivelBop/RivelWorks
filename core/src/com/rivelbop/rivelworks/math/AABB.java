@@ -131,36 +131,43 @@ public class AABB extends Rectangle {
             float overlapX = combinedHalfWidths - Math.abs(dx);
             float overlapY = combinedHalfHeights - Math.abs(dy);
 
+            // Exactly in the center of the other body (do nothing)
             if (dx == 0 && dy == 0) {
                 return;
             }
 
             if (overlapX < overlapY) {
                 if (dx > 0) { // Colliding from right
-                    x = other.x - other.width; // Push to the left
+                    setCenterX(other.centerX() - combinedHalfWidths); // Push to the left
                 } else { // Colliding from left
                     x = other.x + other.width; // Push to the right
                 }
                 return;
             } else if (!precise || overlapY < overlapX) {
                 if (dy > 0) { // Colliding from top
-                    y = other.y - other.height; // Push to the bottom
+                    setCenterY(other.centerY() - combinedHalfHeights); // Push to the bottom
                 } else { // Colliding from bottom
                     y = other.y + other.height; // Push to the top
                 }
                 return;
             }
 
-            if (dy > 0) {
-                if (dx > 0) {
-                    setPosition(other.x - other.width, other.y - other.height);
-                } else {
-                    setPosition(other.x + other.width, other.y - other.height);
+            if (dy > 0) { // Colliding from top
+                if (dx > 0) { // Colliding from right
+                    // Move to bottom left
+                    setCenter(other.centerX() - combinedHalfWidths, other.centerY() - combinedHalfHeights);
+                } else { // Colliding from left
+                    // Move to bottom right
+                    x = other.x + other.width;
+                    setCenterY(other.centerY() - combinedHalfHeights);
                 }
-            } else if (dy < 0) {
-                if (dx > 0) {
-                    setPosition(other.x - other.width, other.y + other.height);
-                } else {
+            } else if (dy < 0) { // Colliding from bottom
+                if (dx > 0) { // Colliding from right
+                    // Move to top left
+                    setCenterX(other.centerX() - combinedHalfWidths);
+                    y = other.y + other.height;
+                } else { // Colliding from left
+                    // Move to top right
                     setPosition(other.x + other.width, other.y + other.height);
                 }
             }
