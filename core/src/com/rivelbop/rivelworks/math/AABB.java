@@ -111,6 +111,90 @@ public class AABB extends Rectangle {
     }
 
     /**
+     * Pushes the current AABB out of the other if they collide.
+     *
+     * @param other The other AABB body to check collisions.
+     * @param precise If false, will simplify corner collisions into the dominant axis.
+     */
+    public void resolveCollision(AABB other, boolean precise) {
+        // Get the difference of centers
+        float dx = other.centerX() - centerX(),
+                dy = other.centerY() - centerY();
+
+        // Used to compare range
+        float combinedHalfWidths = (width / 2) + (other.width / 2),
+                combinedHalfHeights = (height / 2) + (other.height / 2);
+
+        // If overlapping
+        if (Math.abs(dx) < combinedHalfWidths && Math.abs(dy) < combinedHalfHeights) {
+            // Get overlap amount
+            float overlapX = combinedHalfWidths - Math.abs(dx);
+            float overlapY = combinedHalfHeights - Math.abs(dy);
+
+            if (dx == 0 && dy == 0) {
+                return;
+            }
+
+            if (overlapX < overlapY) {
+                if (dx > 0) { // Colliding from right
+                    x = other.x - other.width; // Push to the left
+                } else { // Colliding from left
+                    x = other.x + other.width; // Push to the right
+                }
+                return;
+            } else if (!precise || overlapY < overlapX) {
+                if (dy > 0) { // Colliding from top
+                    y = other.y - other.height; // Push to the bottom
+                } else { // Colliding from bottom
+                    y = other.y + other.height; // Push to the top
+                }
+                return;
+            }
+
+            if (dy > 0) {
+                if (dx > 0) {
+                    setPosition(other.x - other.width, other.y - other.height);
+                } else {
+                    setPosition(other.x + other.width, other.y - other.height);
+                }
+            } else if (dy < 0) {
+                if (dx > 0) {
+                    setPosition(other.x - other.width, other.y + other.height);
+                } else {
+                    setPosition(other.x + other.width, other.y + other.height);
+                }
+            }
+        }
+    }
+
+    /**
+     * Pushes the current AABB out of the other if they collide using the less precise collision check.
+     *
+     * @param other The other AABB body to check collisions.
+     */
+    public void resolveCollision(AABB other) {
+        resolveCollision(other, false);
+    }
+
+    /**
+     * Sets the center x-position.
+     *
+     * @param x The x-pos value.
+     */
+    public void setCenterX(float x) {
+        this.x = x - width / 2f;
+    }
+
+    /**
+     * Sets the center y-position.
+     *
+     * @param y The y-pos value.
+     */
+    public void setCenterY(float y) {
+        this.y = y - height / 2f;
+    }
+
+    /**
      * @return The center x-position.
      */
     public float centerX() {
