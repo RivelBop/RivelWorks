@@ -97,6 +97,7 @@ public class GamePad implements ControllerListener {
      */
     @Override
     public boolean buttonDown(Controller controller, int i) {
+        JUST_PRESSED_BUTTONS.remove(i);
         Gdx.app.postRunnable(() -> JUST_PRESSED_BUTTONS.add(i));
         return false;
     }
@@ -110,7 +111,6 @@ public class GamePad implements ControllerListener {
      */
     @Override
     public boolean buttonUp(Controller controller, int i) {
-        Gdx.app.postRunnable(() -> JUST_PRESSED_BUTTONS.remove(i));
         return false;
     }
 
