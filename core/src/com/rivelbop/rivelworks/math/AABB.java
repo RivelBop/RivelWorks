@@ -113,7 +113,7 @@ public class AABB extends Rectangle {
     /**
      * Pushes the current AABB out of the other if they collide.
      *
-     * @param other The other AABB body to check collisions.
+     * @param other   The other AABB body to check collisions.
      * @param precise If false, will simplify corner collisions into the dominant axis.
      */
     public void resolveCollision(AABB other, boolean precise) {
